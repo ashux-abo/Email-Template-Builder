@@ -1,6 +1,6 @@
-import mongoose from 'mongoose';
-import EmailTemplate from '@/models/EmailTemplate';
-
+import mongoose from "mongoose";
+import EmailTemplate from "../models/EmailTemplate";
+/* eslint-disable  @typescript-eslint/no-explicit-any */
 // Direct image URL for email clients
 const logoUrl = "https://i.imgur.com/P8J3e6Y.png";
 
@@ -23,10 +23,10 @@ export interface EmailTemplate {
 
 export const emailTemplates: EmailTemplate[] = [
   {
-    id: 'welcome-email',
-    name: 'Welcome Email',
-    description: 'Send a welcome email to new users',
-    subject: 'Welcome to PaletteMail, {{name}}!',
+    id: "welcome-email",
+    name: "Welcome Email",
+    description: "Send a welcome email to new users",
+    subject: "Welcome to PaletteMail, {{name}}!",
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; color: #333;">
         <div style="text-align: center; margin-bottom: 20px;">
@@ -47,14 +47,14 @@ export const emailTemplates: EmailTemplate[] = [
         </div>
       </div>
     `,
-    variables: ['name', 'email', 'loginLink', 'senderName', 'baseUrl'],
+    variables: ["name", "email", "loginLink", "senderName", "baseUrl"],
     predefined: true,
   },
   {
-    id: 'monthly-newsletter',
-    name: 'Monthly Newsletter',
-    description: 'Send a monthly newsletter with updates and news',
-    subject: '{{month}} Newsletter - Latest Updates From Our Team',
+    id: "monthly-newsletter",
+    name: "Monthly Newsletter",
+    description: "Send a monthly newsletter with updates and news",
+    subject: "{{month}} Newsletter - Latest Updates From Our Team",
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; color: #333;">
         <div style="text-align: center; margin-bottom: 20px;">
@@ -64,7 +64,7 @@ export const emailTemplates: EmailTemplate[] = [
           <h1 style="color: #4F46E5; font-size: 24px; margin-bottom: 20px;">{{month}} Newsletter</h1>
           <p style="margin-bottom: 15px;">Hello {{name}},</p>
           <p style="margin-bottom: 15px;">Here are the latest updates from our team:</p>
-          
+
           <div style="margin: 25px 0;">
             {{#each newsItems}}
             <div style="margin-bottom: 20px; border-left: 3px solid #4F46E5; padding-left: 15px;">
@@ -73,7 +73,7 @@ export const emailTemplates: EmailTemplate[] = [
             </div>
             {{/each}}
           </div>
-          
+
           <p style="margin-top: 15px;">Thank you for being a valued member of our community!</p>
         </div>
         <div style="color: #777; font-size: 14px; text-align: center; margin-top: 30px;">
@@ -83,14 +83,14 @@ export const emailTemplates: EmailTemplate[] = [
         </div>
       </div>
     `,
-    variables: ['month', 'name', 'newsItems', 'unsubscribeLink', 'baseUrl'],
+    variables: ["month", "name", "newsItems", "unsubscribeLink", "baseUrl"],
     predefined: true,
   },
   {
-    id: 'password-reset',
-    name: 'Password Reset',
-    description: 'Send a password reset link to users',
-    subject: 'Reset Your Password - PaletteMail',
+    id: "password-reset",
+    name: "Password Reset",
+    description: "Send a password reset link to users",
+    subject: "Reset Your Password - PaletteMail",
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; color: #333;">
         <div style="text-align: center; margin-bottom: 20px;">
@@ -111,13 +111,13 @@ export const emailTemplates: EmailTemplate[] = [
         </div>
       </div>
     `,
-    variables: ['name', 'resetLink', 'senderName', 'baseUrl'],
+    variables: ["name", "resetLink", "senderName", "baseUrl"],
   },
   {
-    id: 'interview-invitation',
-    name: 'Interview Invitation',
-    description: 'Send an interview invitation to candidates',
-    subject: 'Interview Invitation - {{position}} Position',
+    id: "interview-invitation",
+    name: "Interview Invitation",
+    description: "Send an interview invitation to candidates",
+    subject: "Interview Invitation - {{position}} Position",
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; color: #333;">
         <div style="text-align: center; margin-bottom: 20px;">
@@ -143,13 +143,24 @@ export const emailTemplates: EmailTemplate[] = [
         </div>
       </div>
     `,
-    variables: ['name', 'company', 'interviewDate', 'interviewTime', 'meetingID', 'meetingLink', 'acceptLink', 'declineLink', 'senderName', 'baseUrl'],
+    variables: [
+      "name",
+      "company",
+      "interviewDate",
+      "interviewTime",
+      "meetingID",
+      "meetingLink",
+      "acceptLink",
+      "declineLink",
+      "senderName",
+      "baseUrl",
+    ],
   },
   {
-    id: 'general-notification',
-    name: 'General Notification',
-    description: 'Send a general notification to users',
-    subject: '{{subject}}',
+    id: "general-notification",
+    name: "General Notification",
+    description: "Send a general notification to users",
+    subject: "{{subject}}",
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; color: #333;">
         <div style="text-align: center; margin-bottom: 20px;">
@@ -172,13 +183,20 @@ export const emailTemplates: EmailTemplate[] = [
         </div>
       </div>
     `,
-    variables: ['name', 'title', 'description', 'learnMoreLink', 'senderName', 'baseUrl'],
+    variables: [
+      "name",
+      "title",
+      "description",
+      "learnMoreLink",
+      "senderName",
+      "baseUrl",
+    ],
   },
   {
-    id: 'security-alert',
-    name: 'Security Alert',
-    description: 'Send a security alert notification to users',
-    subject: 'Security Alert - Action Required',
+    id: "security-alert",
+    name: "Security Alert",
+    description: "Send a security alert notification to users",
+    subject: "Security Alert - Action Required",
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; color: #333;">
         <div style="text-align: center; margin-bottom: 20px;">
@@ -199,7 +217,7 @@ export const emailTemplates: EmailTemplate[] = [
         </div>
       </div>
     `,
-    variables: ['name', 'title', 'resetLink', 'senderName', 'baseUrl'],
+    variables: ["name", "title", "resetLink", "senderName", "baseUrl"],
   },
 ];
 
@@ -216,7 +234,7 @@ export function getTemplates(): EmailTemplate[] {
  * Get a predefined email template by ID
  */
 export function getTemplateById(id: string): EmailTemplate | undefined {
-  return emailTemplates.find(template => template.id === id);
+  return emailTemplates.find((template) => template.id === id);
 }
 
 /**
@@ -227,7 +245,7 @@ export async function getTemplateFromDb(id: string): Promise<any> {
     const template = await EmailTemplate.findById(id);
     return template;
   } catch (error) {
-    console.error('Error fetching template from database:', error);
+    console.error("Error fetching template from database:", error);
     return null;
   }
 }
@@ -235,28 +253,33 @@ export async function getTemplateFromDb(id: string): Promise<any> {
 /**
  * Compile an email template with variables
  */
-export function compileTemplate(templateHtml: string, variables: Record<string, string>): string {
+export function compileTemplate(
+  templateHtml: string,
+  variables: Record<string, string>,
+): string {
   let compiledHtml = templateHtml;
-  
+
   // Replace all variables in the template
   Object.entries(variables).forEach(([key, value]) => {
-    const regex = new RegExp(`{{${key}}}`, 'g');
-    compiledHtml = compiledHtml.replace(regex, value || '');
+    const regex = new RegExp(`{{${key}}}`, "g");
+    compiledHtml = compiledHtml.replace(regex, value || "");
   });
-  
+
   return compiledHtml;
 }
 
 /**
  * Get template by ID with support for database templates
  */
-export async function getTemplateByIdWithDb(id: string): Promise<EmailTemplate | null> {
+export async function getTemplateByIdWithDb(
+  id: string,
+): Promise<EmailTemplate | null> {
   // First check predefined templates
   const predefinedTemplate = getTemplateById(id);
   if (predefinedTemplate) {
     return predefinedTemplate;
   }
-  
+
   // Then check database
   try {
     const dbTemplate = await getTemplateFromDb(id);
@@ -268,12 +291,12 @@ export async function getTemplateByIdWithDb(id: string): Promise<EmailTemplate |
         subject: dbTemplate.subject,
         html: dbTemplate.html,
         variables: dbTemplate.variables,
-        defaultValues: dbTemplate.defaultValues || {}
+        defaultValues: dbTemplate.defaultValues || {},
       };
     }
   } catch (error) {
-    console.error('Error getting template with DB:', error);
+    console.error("Error getting template with DB:", error);
   }
-  
+
   return null;
 }
