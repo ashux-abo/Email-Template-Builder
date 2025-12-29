@@ -7,7 +7,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "../../../components/ui/tabs";
-import ProfileSettings from "../../../components/profilee/ProfileSettings";
+import ProfileSettings from "../../../components/profile/ProfileSettings";
 import SecuritySettings from "../../../components/profile/SecuritySettings";
 import NotificationSettings from "../../../components/profile/NotificationSettings";
 
