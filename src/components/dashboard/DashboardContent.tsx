@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import EmailSender from "./EmailSender";
 import EmailTester from "./EmailTester";
 import { EnvelopeIcon } from "@heroicons/react/24/outline";
@@ -12,22 +12,16 @@ interface DashboardContentProps {
 export default function DashboardContent({
   isDevelopment,
 }: DashboardContentProps) {
-  // Only show the tester in development environment
-  const [showTester, setShowTester] = useState(() => {
+  // Initialize with false, then check localStorage in useEffect
+  const [showTester, setShowTester] = useState(false);
+
+  // Access localStorage only on the client side
+  useEffect(() => {
     if (isDevelopment) {
       const testerHidden = localStorage.getItem("emailTesterHidden") === "true";
-      return !testerHidden;
+      setShowTester(!testerHidden);
     }
-    return false;
-  });
-
-  // In production, we don't need any of this localStorage logic
-  // useEffect(() => {
-  //   if (isDevelopment) {
-  //     const testerHidden = localStorage.getItem('emailTesterHidden') === 'true';
-  //     setShowTester(!testerHidden);
-  //   }
-  // }, [isDevelopment]);
+  }, [isDevelopment]);
 
   // Show the tester component and update localStorage (dev only)
   const handleShowTester = () => {
