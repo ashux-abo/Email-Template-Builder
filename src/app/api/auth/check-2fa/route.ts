@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import connectDB from "../../../../lib/db";
 import User from "../../../../models/User";
-import SecuritySettings from "@/models/SecuritySettings";
+import SecuritySettings from "../../../../models/SecuritySettings";
 import { z } from "zod";
 
 // Validation schema for checking 2FA

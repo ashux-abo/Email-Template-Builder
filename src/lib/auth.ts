@@ -1,14 +1,16 @@
-import { NextRequest, NextResponse } from 'next/server';
-import jwt from 'jsonwebtoken';
-import { cookies } from 'next/headers';
-import { IUser } from '@/models/User';
-import Session from '@/models/Session';
-import { UAParser } from 'ua-parser-js';
+import { NextRequest, NextResponse } from "next/server";
+import jwt from "jsonwebtoken";
+import { cookies } from "next/headers";
+import { IUser } from "../models/User";
+import Session from "../models/Session";
+import { UAParser } from "ua-parser-js";
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
 if (!JWT_SECRET) {
-  throw new Error('Please define the JWT_SECRET environment variable inside .env');
+  throw new Error(
+    "Please define the JWT_SECRET environment variable inside .env",
+  );
 }
 
 interface TokenPayload {
@@ -21,7 +23,10 @@ interface TokenPayload {
 /**
  * Generate a JWT token for a user
  */
-export function generateToken(user: Partial<IUser> & { _id: string }, sessionId?: string): string {
+export function generateToken(
+  user: Partial<IUser> & { _id: string },
+  sessionId?: string,
+): string {
   const payload: TokenPayload = {
     id: user._id,
     email: user.email!,
@@ -33,7 +38,7 @@ export function generateToken(user: Partial<IUser> & { _id: string }, sessionId?
   }
 
   return jwt.sign(payload, JWT_SECRET!, {
-    expiresIn: '7d', // Token expires in 7 days
+    expiresIn: "7d", // Token expires in 7 days
   });
 }
 
@@ -54,7 +59,7 @@ export function verifyToken(token: string): TokenPayload | null {
  */
 export function getUserFromRequest(req: NextRequest): TokenPayload | null {
   try {
-    const token = req.cookies.get('token')?.value;
+    const token = req.cookies.get("token")?.value;
     if (!token) return null;
     return verifyToken(token);
   } catch (error) {
@@ -67,7 +72,7 @@ export function getUserFromRequest(req: NextRequest): TokenPayload | null {
  */
 export function getTokenFromRequest(req: NextRequest): string | null {
   try {
-    return req.cookies.get('token')?.value || null;
+    return req.cookies.get("token")?.value || null;
   } catch (error) {
     return null;
   }
@@ -81,7 +86,7 @@ export async function getUser(): Promise<TokenPayload | null> {
   try {
     // Note: This is only callable in a Server Component
     const cookieStore = await cookies();
-    const token = cookieStore.get('token')?.value;
+    const token = cookieStore.get("token")?.value;
     if (!token) return null;
     return verifyToken(token);
   } catch (error) {
@@ -97,11 +102,16 @@ export function parseUserAgent(userAgent: string) {
   const browser = parser.getBrowser();
   const os = parser.getOS();
   const device = parser.getDevice();
-  
+
   return {
-    browser: `${browser.name || 'Unknown'} ${browser.version || ''}`.trim(),
-    os: `${os.name || 'Unknown'} ${os.version || ''}`.trim(),
-    deviceType: device.type || (typeof window !== 'undefined' && window.innerWidth <= 768 ? 'mobile' : 'desktop') || 'desktop'
+    browser: `${browser.name || "Unknown"} ${browser.version || ""}`.trim(),
+    os: `${os.name || "Unknown"} ${os.version || ""}`.trim(),
+    deviceType:
+      device.type ||
+      (typeof window !== "undefined" && window.innerWidth <= 768
+        ? "mobile"
+        : "desktop") ||
+      "desktop",
   };
 }
 
@@ -109,37 +119,37 @@ export function parseUserAgent(userAgent: string) {
  * Create a new session for a user
  */
 export async function createSession(
-  userId: string, 
-  userAgent: string, 
-  ip: string
+  userId: string,
+  userAgent: string,
+  ip: string,
 ): Promise<string> {
   // Parse user agent
   const deviceInfo = parseUserAgent(userAgent);
-  
+
   // Calculate expiry date (7 days from now)
   const expiryDate = new Date();
   expiryDate.setDate(expiryDate.getDate() + 7);
-  
+
   // Create a unique token for the session
   const sessionToken = jwt.sign(
     { userId, timestamp: Date.now() },
     JWT_SECRET!,
-    { expiresIn: '7d' }
+    { expiresIn: "7d" },
   );
-  
+
   // Create a new session
   const session = new Session({
     userId,
     token: sessionToken,
     deviceInfo: {
       ...deviceInfo,
-      ip
+      ip,
     },
     expiresAt: expiryDate,
   });
-  
+
   await session.save();
-  
+
   return sessionToken;
 }
 
@@ -148,13 +158,13 @@ export async function createSession(
  */
 export function setAuthCookie(res: NextResponse, token: string): void {
   res.cookies.set({
-    name: 'token',
+    name: "token",
     value: token,
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
     maxAge: 7 * 24 * 60 * 60, // 7 days
-    path: '/',
+    path: "/",
   });
 }
 
@@ -163,12 +173,12 @@ export function setAuthCookie(res: NextResponse, token: string): void {
  */
 export function clearAuthCookie(res: NextResponse): void {
   res.cookies.set({
-    name: 'token',
-    value: '',
+    name: "token",
+    value: "",
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
     maxAge: 0,
-    path: '/',
+    path: "/",
   });
-} 
+}

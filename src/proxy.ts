@@ -17,7 +17,7 @@ const protectedRoutes = [
   "/api/user",
 ];
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   // Get the pathname
   const { pathname } = request.nextUrl;
 
