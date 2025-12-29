@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 // Define types for our connection cache
 interface ConnectionCache {
@@ -15,7 +15,9 @@ declare global {
 const MONGODB_URI = process.env.MONGODB_URI;
 
 if (!MONGODB_URI) {
-  throw new Error('Please define the MONGODB_URI environment variable inside .env');
+  throw new Error(
+    "Please define the MONGODB_URI environment variable inside .env",
+  );
 }
 
 // Initialize the cache
@@ -36,6 +38,9 @@ async function connectDB(): Promise<typeof mongoose> {
   if (!global.mongooseCache.promise) {
     const opts = {
       bufferCommands: false,
+      maxPoolSize: 10, // Limits the number of concurrent connections
+      serverSelectionTimeoutMS: 5000, // Fail fast if the server isn't responding
+      socketTimeoutMS: 45000, // Give the database time to finish operations
     };
 
     global.mongooseCache.promise = mongoose.connect(MONGODB_URI!, opts);
@@ -51,4 +56,4 @@ async function connectDB(): Promise<typeof mongoose> {
   return global.mongooseCache.conn;
 }
 
-export default connectDB; 
+export default connectDB;
