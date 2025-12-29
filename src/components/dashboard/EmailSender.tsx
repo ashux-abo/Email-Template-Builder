@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 import TemplateSelector from "../../components/email/TemplateSelector";
-import ContentEditor from "@/components/email/ContentEditor";
+import ContentEditor from "../../components/email/ContentEditor";
 import TemplatePreview from "../../components/email/TemplatePreview";
 import { EmailTemplate } from "../../lib/email-templates";
 
