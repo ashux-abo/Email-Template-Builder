@@ -3,425 +3,319 @@ import { cookies } from "next/headers";
 import OptimizedImage from "../components/ui/optimized-image";
 
 export default async function Home() {
-  // Check if there's a token cookie to determine if user is logged in
   const cookieStore = await cookies();
   const authToken = cookieStore.get("token");
   const hasAuthCookie = !!authToken;
 
   return (
-    <div className="bg-white">
+    <div className="bg-slate-950 text-slate-100 overflow-hidden">
+      {/* Background Elements (Neutralized) */}
+      <div className="fixed inset-0 pointer-events-none">
+        <div className="absolute top-0 -left-40 w-96 h-96 bg-slate-700/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-slate-800/10 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-slate-700/5 rounded-full blur-3xl"></div>
+      </div>
       {/* Hero Section */}
-      <div className="relative overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-secondary/5"></div>
-          <div className="absolute top-0 right-0 w-full h-full opacity-30 bg-[radial-gradient(circle_at_110%_90%,#3b82f6,transparent)]"></div>
-        </div>
-
-        <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-24">
-          <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
-            <div className="flex flex-col justify-center space-y-8">
-              <div className="space-y-5">
-                <span className="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
-                  Professional Email Solution
+      <section className="relative min-h-screen flex items-center">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8 py-24 w-full">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            {/* Left Content */}
+            <div className="space-y-10 z-10">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900 border border-slate-800">
+                <div className="w-2 h-2 rounded-full bg-indigo-400"></div>
+                <span className="text-sm font-medium text-slate-400">
+                  Professional Email Platform
                 </span>
-                <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl">
-                  <span className="block">Create stunning</span>
-                  <span className="block text-primary">email designs</span>
-                  <span className="block">with Palette Mail</span>
+              </div>
+
+              <div className="space-y-6">
+                <h1 className="text-6xl lg:text-7xl font-bold leading-tight tracking-tight">
+                  Email design,
+                  <br />
+                  <span className="text-indigo-400">reimagined</span>
                 </h1>
-                <p className="mt-3 text-lg text-gray-600 md:text-xl">
-                  Craft beautiful, responsive emails in minutes with our
-                  intuitive visual builder. Personalize your content, manage
-                  your contacts, and authenticate your communications securely
-                  with Palette Mail.
+                <p className="text-xl text-slate-400 leading-relaxed max-w-xl">
+                  Finally, an email builder that isn't a headache. Design
+                  great-looking campaigns in minutes, keep your data safe, and
+                  send with confidence knowing your emails will show up exactly
+                  how you planned.
                 </p>
               </div>
 
-              {!hasAuthCookie && (
-                <div className="flex flex-col space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
-                  <Link
-                    href="/register"
-                    className="rounded-md bg-primary px-8 py-4 text-center text-base font-medium text-white shadow-lg hover:bg-primary/90 transition-all hover:shadow-xl"
-                  >
-                    Start Creating For Free
-                  </Link>
-                  <Link
-                    href="/login"
-                    className="rounded-md border border-gray-300 bg-white px-8 py-4 text-center text-base font-medium text-gray-700 shadow hover:bg-gray-50 transition-all"
-                  >
-                    Log In to Your Account
-                  </Link>
-                </div>
-              )}
-
-              {hasAuthCookie && (
-                <div className="flex flex-col space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">
-                  <Link
-                    href="/dashboard"
-                    className="rounded-md bg-primary px-8 py-4 text-center text-base font-medium text-white shadow-lg hover:bg-primary/90 transition-all hover:shadow-xl"
-                  >
-                    Go to Dashboard
-                  </Link>
-                  <Link
-                    href="/dashboard/templates/visual/new"
-                    className="rounded-md border border-gray-300 bg-white px-8 py-4 text-center text-base font-medium text-gray-700 shadow hover:bg-gray-50 transition-all"
-                  >
-                    Create New Template
-                  </Link>
-                </div>
-              )}
-
-              <div className="pt-4">
-                <p className="text-sm text-gray-500 flex items-center">
-                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-green-100 mr-2">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={2}
-                      stroke="currentColor"
-                      className="w-4 h-4 text-green-600"
+              <div className="flex flex-col sm:flex-row gap-4">
+                {!hasAuthCookie ? (
+                  <>
+                    <Link
+                      href="/register"
+                      className="px-8 py-4 bg-indigo-600 rounded-xl font-medium hover:bg-indigo-500 transition-all shadow-lg shadow-black/30"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
-                  </span>
-                  No credit card required
-                </p>
+                      Start Building Free
+                    </Link>
+                    <Link
+                      href="/login"
+                      className="px-8 py-4 bg-slate-800 border border-slate-700 rounded-xl font-medium hover:bg-slate-700 transition-all"
+                    >
+                      Sign In
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      href="/dashboard"
+                      className="px-8 py-4 bg-indigo-600 rounded-xl font-medium hover:bg-indigo-500 transition-all shadow-lg shadow-black/30"
+                    >
+                      Open Dashboard
+                    </Link>
+                    <Link
+                      href="/dashboard/templates/visual/new"
+                      className="px-8 py-4 bg-slate-800 border border-slate-700 rounded-xl font-medium hover:bg-slate-700 transition-all"
+                    >
+                      New Template
+                    </Link>
+                  </>
+                )}
               </div>
-            </div>
 
-            {/* App Preview */}
-            <div className="flex items-center justify-center">
-              <div className="relative h-[530px] w-full max-w-lg">
-                <div className="absolute top-0 left-0 h-full w-full rounded-2xl bg-gradient-to-br from-primary to-secondary opacity-20 blur-3xl"></div>
-                <div className="relative rounded-2xl border border-gray-200 bg-white p-8 shadow-xl">
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center">
-                        <OptimizedImage
-                          src="/PaletteMail/Icon/pltmaild 32px.svg"
-                          alt="PaletteMail Icon"
-                          width={24}
-                          height={24}
-                          className="h-6 w-auto mr-2"
-                          priority={true}
-                        />
-                        <h2 className="text-xl font-bold">Email Builder</h2>
-                      </div>
-                      <div className="flex space-x-1.5">
-                        <div className="h-3 w-3 rounded-full bg-red-400"></div>
-                        <div className="h-3 w-3 rounded-full bg-yellow-400"></div>
-                        <div className="h-3 w-3 rounded-full bg-green-400"></div>
-                      </div>
-                    </div>
-
-                    <div className="space-y-3 rounded-md border border-gray-200 p-4">
-                      <div className="flex items-center justify-between">
-                        <h3 className="font-medium">Template Design</h3>
-                        <div className="flex space-x-2">
-                          <div className="h-7 w-7 rounded bg-primary/10 flex items-center justify-center">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              strokeWidth={1.5}
-                              stroke="currentColor"
-                              className="w-4 h-4 text-primary"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
-                              />
-                            </svg>
-                          </div>
-                          <div className="h-7 w-7 rounded bg-primary/10 flex items-center justify-center">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              strokeWidth={1.5}
-                              stroke="currentColor"
-                              className="w-4 h-4 text-primary"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"
-                              />
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                              />
-                            </svg>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="rounded-md border border-gray-200 p-4">
-                        <div className="h-8 w-28 rounded-md bg-primary/20 mb-4 flex items-center justify-center">
-                          <span className="text-xs font-medium text-primary">
-                            Header
-                          </span>
-                        </div>
-                        <div className="space-y-2">
-                          <div className="h-4 w-full rounded-md bg-gray-100"></div>
-                          <div className="h-4 w-4/5 rounded-md bg-gray-100"></div>
-                          <div className="h-4 w-5/6 rounded-md bg-gray-100"></div>
-                        </div>
-                        <div className="mt-6 h-24 w-full rounded-md bg-gray-100 flex items-center justify-center">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="w-8 h-8 text-gray-300"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
-                            />
-                          </svg>
-                        </div>
-                        <div className="mt-6 flex justify-center">
-                          <div className="h-9 w-32 rounded-md bg-primary/80 flex items-center justify-center">
-                            <span className="text-xs font-medium text-white">
-                              Read More
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-3">
-                      <div className="space-y-2">
-                        <label className="text-sm font-medium">
-                          Recipients
-                        </label>
-                        <div className="h-10 rounded-md bg-gray-100 border border-gray-200 flex items-center px-3">
-                          <div className="h-4 w-32 rounded bg-gray-200"></div>
-                        </div>
-                      </div>
-
-                      <div className="space-y-2">
-                        <label className="text-sm font-medium">Subject</label>
-                        <div className="h-10 rounded-md bg-gray-100 border border-gray-200 flex items-center px-3">
-                          <div className="h-4 w-24 rounded bg-gray-200"></div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="mt-6 flex justify-end">
-                      <div className="h-10 w-28 rounded-md bg-primary flex items-center justify-center">
-                        <span className="text-sm font-medium text-white">
-                          Send Email
-                        </span>
-                      </div>
-                    </div>
+              <div className="flex items-center gap-8 pt-6">
+                <div className="flex items-center gap-3">
+                  <div className="flex -space-x-3">
+                    <div className="w-10 h-10 rounded-full bg-slate-700 border-2 border-slate-900"></div>
+                    <div className="w-10 h-10 rounded-full bg-slate-600 border-2 border-slate-900"></div>
+                    <div className="w-10 h-10 rounded-full bg-slate-500 border-2 border-slate-900"></div>
+                  </div>
+                  <div className="text-sm">
+                    <div className="font-medium">12,000+ creators</div>
+                    <div className="text-slate-500">trust Palette Mail</div>
                   </div>
                 </div>
               </div>
             </div>
+
+            {/* Right Visual */}
+            <div className="relative lg:h-[700px] flex items-center justify-center">
+              <div className="relative w-full max-w-lg">
+                <div className="bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-2xl">
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center">
+                        <OptimizedImage
+                          src="/PaletteMail/Icon/pltmaild 32px.svg"
+                          alt="PaletteMail"
+                          width={24}
+                          height={24}
+                          className="w-6 h-6"
+                          priority
+                        />
+                      </div>
+                      <div>
+                        <div className="font-semibold text-sm">
+                          Email Builder
+                        </div>
+                        <div className="text-xs text-slate-500">
+                          Template Editor
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex gap-2">
+                      <div className="w-3 h-3 rounded-full bg-slate-600"></div>
+                      <div className="w-3 h-3 rounded-full bg-slate-600"></div>
+                      <div className="w-3 h-3 rounded-full bg-slate-600"></div>
+                    </div>
+                  </div>
+
+                  <div className="bg-slate-800 rounded-xl p-6 border border-slate-700 mb-6">
+                    <div className="space-y-4">
+                      <div className="h-3 bg-slate-700 rounded-full w-full"></div>
+                      <div className="h-3 bg-slate-700 rounded-full w-4/5"></div>
+                      <div className="h-3 bg-slate-700 rounded-full w-5/6"></div>
+                      <div className="h-24 bg-slate-700 rounded-lg"></div>
+                      <div className="flex justify-center pt-2">
+                        <div className="px-6 py-2 bg-indigo-600 rounded-lg text-sm font-medium">
+                          Call to Action
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <div className="text-xs text-slate-500 font-medium mb-2">
+                        RECIPIENTS
+                      </div>
+                      <div className="h-10 bg-slate-800 border border-slate-700 rounded-lg"></div>
+                    </div>
+                    <div>
+                      <div className="text-xs text-slate-500 font-medium mb-2">
+                        SUBJECT
+                      </div>
+                      <div className="h-10 bg-slate-800 border border-slate-700 rounded-lg"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="absolute -top-6 -right-6 bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-xl">
+                  <div className="text-sm font-medium">98% Deliverable</div>
+                  <div className="text-xs text-slate-500">Inbox Ready</div>
+                </div>
+
+                <div className="absolute -bottom-6 -left-6 bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-xl">
+                  <div className="text-sm font-medium">Real-time Preview</div>
+                  <div className="text-xs text-slate-500">Live Updates</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-
-      {/* Features Section */}
-      <div className="py-16 bg-white">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Everything you need to create amazing emails
+      </section>
+      {/* Features Bento Grid */}{" "}
+      <section className="relative py-32">
+        {" "}
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          {" "}
+          <div className="text-center mb-20">
+            {" "}
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 backdrop-blur-xl border border-white/10 mb-6">
+              {" "}
+              <span className="text-sm font-medium text-gray-400">
+                {" "}
+                PLATFORM FEATURES{" "}
+              </span>{" "}
+            </div>{" "}
+            <h2 className="text-5xl font-bold mb-6">
+              {" "}
+              Built for modern <br />{" "}
+              <span className="bg-gradient-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent">
+                {" "}
+                email experiences{" "}
+              </span>{" "}
+            </h2>{" "}
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+              {" "}
+              Everything you need to design, manage, and deliver exceptional
+              email campaigns{" "}
+            </p>{" "}
+          </div>{" "}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {" "}
+            {/* Feature 1 - Large */}{" "}
+            <div className="group relative bg-slate-900/50 backdrop-blur-xl border border-white/10 rounded-3xl p-8 hover:border-white/20 transition-all overflow-hidden">
+              {" "}
+              <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-blue-500/20 to-transparent rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700"></div>{" "}
+              <div className="relative z-10">
+                {" "}
+                <div className="w-14 h-14 bg-blue-500/20 rounded-2xl flex items-center justify-center mb-6">
+                  {" "}
+                  <svg
+                    className="w-7 h-7 text-blue-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    {" "}
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1.5}
+                      d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"
+                    />{" "}
+                  </svg>{" "}
+                </div>{" "}
+                <h3 className="text-2xl font-bold mb-3">
+                  {" "}
+                  Visual Email Builder{" "}
+                </h3>{" "}
+                <p className="text-gray-400 leading-relaxed">
+                  {" "}
+                  Design stunning emails with our intuitive editor. No coding
+                  required.{" "}
+                </p>{" "}
+              </div>{" "}
+            </div>{" "}
+            {/* Feature 3 */}{" "}
+            <div className="group relative bg-slate-900/50 backdrop-blur-xl border border-white/10 rounded-3xl p-8 hover:border-white/20 transition-all overflow-hidden">
+              {" "}
+              <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-cyan-500/20 to-transparent rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700"></div>{" "}
+              <div className="relative z-10">
+                {" "}
+                <div className="w-14 h-14 bg-cyan-500/20 rounded-2xl flex items-center justify-center mb-6">
+                  {" "}
+                  <svg
+                    className="w-7 h-7 text-cyan-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    {" "}
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1.5}
+                      d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                    />{" "}
+                  </svg>{" "}
+                </div>{" "}
+                <h3 className="text-2xl font-bold mb-3">Secure Auth</h3>{" "}
+                <p className="text-gray-400 leading-relaxed">
+                  {" "}
+                  Enterprise-grade security with 2FA and advanced authentication
+                  protocols.{" "}
+                </p>{" "}
+              </div>{" "}
+            </div>{" "}
+            {/* Feature 6 */}{" "}
+            <div className="group relative bg-slate-900/50 backdrop-blur-xl border border-white/10 rounded-3xl p-8 hover:border-white/20 transition-all overflow-hidden">
+              {" "}
+              <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-amber-500/20 to-transparent rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700"></div>{" "}
+              <div className="relative z-10">
+                {" "}
+                <div className="w-14 h-14 bg-amber-500/20 rounded-2xl flex items-center justify-center mb-6">
+                  {" "}
+                  <svg
+                    className="w-7 h-7 text-amber-400"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    {" "}
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1.5}
+                      d="M13 10V3L4 14h7v7l9-11h-7z"
+                    />{" "}
+                  </svg>{" "}
+                </div>{" "}
+                <h3 className="text-2xl font-bold mb-3">Lightning Fast</h3>{" "}
+                <p className="text-gray-400 leading-relaxed">
+                  {" "}
+                  Built for speed with optimized delivery infrastructure and
+                  real-time previews.{" "}
+                </p>{" "}
+              </div>{" "}
+            </div>{" "}
+          </div>{" "}
+        </div>{" "}
+      </section>
+      {/* CTA */}
+      <section className="py-32">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8 text-center">
+          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-20">
+            <h2 className="text-5xl font-bold mb-6">
+              Ready to transform your email marketing?
             </h2>
-            <p className="mt-4 max-w-2xl mx-auto text-xl text-gray-500">
-              Palette Mail combines powerful features with simplicity to help
-              you create and send beautiful emails.
+            <p className="text-xl text-slate-400 mb-10">
+              Join thousands of creators building email experiences with Palette
+              Mail
             </p>
-          </div>
-
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            <div className="rounded-xl border border-gray-200 p-8 shadow-sm hover:shadow-md transition-all">
-              <div className="flex h-12 w-12 items-center justify-center rounded-md bg-primary/10 text-primary mb-5">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-6 h-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
-                  />
-                </svg>
-              </div>
-              <h3 className="text-xl font-medium mb-2">Beautiful Templates</h3>
-              <p className="text-gray-600">
-                Design emails with an intuitive drag-and-drop editor. Choose
-                from a variety of blocks to create personalized, responsive
-                emails.
-              </p>
-            </div>
-
-            <div className="rounded-xl border border-gray-200 p-8 shadow-sm hover:shadow-md transition-all">
-              <div className="flex h-12 w-12 items-center justify-center rounded-md bg-primary/10 text-primary mb-5">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-6 h-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z"
-                  />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                  />
-                </svg>
-              </div>
-              <h3 className="text-xl font-medium mb-2">Easy Customization</h3>
-              <p className="text-gray-600">
-                Personalize every aspect of your emails with custom fonts,
-                colors, images, and layouts. Code or No Code. No Problem.
-              </p>
-            </div>
-
-            <div className="rounded-xl border border-gray-200 p-8 shadow-sm hover:shadow-md transition-all">
-              <div className="flex h-12 w-12 items-center justify-center rounded-md bg-primary/10 text-primary mb-5">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-6 h-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.994 15.994 0 011.622-3.395m3.42 3.42a15.995 15.995 0 004.764-4.648l3.876-5.814a1.151 1.151 0 00-1.597-1.597L14.146 6.32a15.996 15.996 0 00-4.649 4.763m3.42 3.42a6.776 6.776 0 00-3.42-3.42"
-                  />
-                </svg>
-              </div>
-              <h3 className="text-xl font-medium mb-2">Made by You</h3>
-              <p className="text-gray-600">
-                Create emails that reflect your unique brand and style. Your
-                emails, your way - with professional results every time.
-              </p>
-            </div>
-
-            <div className="rounded-xl border border-gray-200 p-8 shadow-sm hover:shadow-md transition-all">
-              <div className="flex h-12 w-12 items-center justify-center rounded-md bg-primary/10 text-primary mb-5">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-6 h-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-              </div>
-              <h3 className="text-xl font-medium mb-2">
-                Secure Authentication
-              </h3>
-              <p className="text-gray-600">
-                Protect your account with Palette Mail Authentication for an
-                extra layer of security using two-factor authentication.
-              </p>
-            </div>
-
-            <div className="rounded-xl border border-gray-200 p-8 shadow-sm hover:shadow-md transition-all">
-              <div className="flex h-12 w-12 items-center justify-center rounded-md bg-primary/10 text-primary mb-5">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-6 h-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
-                  />
-                </svg>
-              </div>
-              <h3 className="text-xl font-medium mb-2">Email Management</h3>
-              <p className="text-gray-600">
-                Organize all your email templates in one place. Save, reuse, and
-                update your designs whenever you need them.
-              </p>
-            </div>
-
-            <div className="rounded-xl border border-gray-200 p-8 shadow-sm hover:shadow-md transition-all">
-              <div className="flex h-12 w-12 items-center justify-center rounded-md bg-primary/10 text-primary mb-5">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-6 h-6"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"
-                  />
-                </svg>
-              </div>
-              <h3 className="text-xl font-medium mb-2">Scheduled Sending</h3>
-              <p className="text-gray-600">
-                Plan your email campaigns in advance. Schedule emails to be sent
-                at the perfect time for your audience.
-              </p>
-            </div>
+            <Link
+              href={hasAuthCookie ? "/dashboard" : "/register"}
+              className="px-10 py-5 bg-indigo-600 rounded-xl font-semibold text-lg hover:bg-indigo-500 transition-all"
+            >
+              {hasAuthCookie ? "Go to Dashboard" : "Get Started Free"}
+            </Link>
           </div>
         </div>
-      </div>
-
-      {/* CTA Section */}
-      <div className="bg-primary">
-        <div className="mx-auto max-w-7xl py-12 px-4 sm:px-6 lg:py-16 lg:px-8 lg:flex lg:items-center lg:justify-between">
-          <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-            <span className="block">Ready to get started?</span>
-            <span className="block text-primary-100">
-              Create your first email template today.
-            </span>
-          </h2>
-          <div className="mt-8 flex lg:mt-0 lg:flex-shrink-0">
-            <div className="inline-flex rounded-md shadow">
-              <Link
-                href={hasAuthCookie ? "/dashboard" : "/register"}
-                className="inline-flex items-center justify-center rounded-md border border-transparent bg-white px-5 py-3 text-base font-medium text-primary hover:bg-gray-50"
-              >
-                {hasAuthCookie ? "Go to Dashboard" : "Get Started for Free"}
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
+      </section>
     </div>
   );
 }
