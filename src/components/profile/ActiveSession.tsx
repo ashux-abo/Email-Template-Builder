@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
   CardFooter,
-} from "@/components/ui/card";
+} from "../../components/ui/card";
 import {
   Computer,
   Smartphone,
