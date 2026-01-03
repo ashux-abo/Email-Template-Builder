@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import dbConnect from "@/lib/dbConnect";
-import { getUserFromRequest } from "@/lib/auth";
-import { sendEmail } from "@/utils/email";
-import { emailSendSchema } from "@/utils/validation";
-import { getTemplateByIdWithDb } from "@/lib/email-templates";
+import dbConnect from "../../../../lib/db";
+import { getUserFromRequest } from "../../../../lib/auth";
+import { sendEmail } from "../../../../utils/email";
+import { emailSendSchema } from "../../../../utils/validation";
+import { getTemplateByIdWithDb } from "../../../../lib/email-templates";
 import { z } from "zod";
 
 export async function POST(request: NextRequest) {

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
 import connectDB from "../../../../lib/db";
-import Contact from "@/models/Contact";
+import Contact from "../../../../models/Contact";
 import { getUserFromRequest } from "../../../../lib/auth";
 
 // GET - Fetch a specific contact
