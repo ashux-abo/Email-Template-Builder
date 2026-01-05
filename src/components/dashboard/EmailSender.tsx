@@ -118,7 +118,7 @@ export default function EmailSender() {
         body: JSON.stringify({
           templateId,
           variables: contentVariables,
-          recipients,
+          recipients: recipients.join(","),
         }),
       });
 
@@ -127,6 +127,8 @@ export default function EmailSender() {
       try {
         result = await response.json();
       } catch (jsonError) {
+        const responseText = await response.text();
+        console.error("Response text:", responseText);
         throw new Error("Failed to parse server response");
       }
 

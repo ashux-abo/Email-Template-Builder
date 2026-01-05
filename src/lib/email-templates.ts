@@ -133,8 +133,8 @@ export const emailTemplates: EmailTemplate[] = [
           <p><strong>Meeting Link:</strong> {{meetingLink}}</p>
           <p>If you have any questions or need assistance, please don't hesitate to contact us.</p>
           <div style="text-align: center; margin: 30px 0;">
-            <a href="{{acceptLink}}" style="background-color: #4F46E5; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold;">Accept Invitation</a>
-            <a href="{{declineLink}}" style="background-color: #4F46E5; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold; margin-left: 10px;">Decline Invitation</a>
+            <a href="{{acceptLink}}" style="display: inline-block; background-color: #4F46E5; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold; margin: 5px;">Accept Invitation</a>
+            <a href="{{declineLink}}" style="display: inline-block; background-color: #6B7280; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold; margin: 5px;">Decline Invitation</a>
           </div>
         </div>
         <div style="color: #777; font-size: 14px; text-align: center; margin-top: 30px;">
