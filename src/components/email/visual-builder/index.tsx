@@ -21,6 +21,14 @@ import {
   VisualTemplate,
   VisualTemplateBuilderProps,
 } from "./types";
+import {
+  Layers,
+  AlertCircle,
+  CheckCircle2,
+  Sparkles,
+  Save,
+  X,
+} from "lucide-react";
 
 export function VisualTemplateBuilder({
   templateId,
@@ -46,7 +54,6 @@ export function VisualTemplateBuilder({
     }
   }, [templateId]);
 
-  // Fetch existing template if editing
   const fetchTemplate = async (id: string) => {
     try {
       setIsLoading(true);
@@ -58,23 +65,16 @@ export function VisualTemplateBuilder({
 
       const data = await response.json();
 
-      // If template already has blocks data, use it directly
       if (
         data.template.blocks &&
         Array.isArray(data.template.blocks) &&
         data.template.blocks.length > 0
       ) {
         setTemplate(data.template);
-      }
-      // If template has HTML but no blocks (likely edited in code editor)
-      else if (data.template.html) {
-        // Basic conversion of HTML to blocks
-        // Start with default blocks structure
+      } else if (data.template.html) {
         const convertedTemplate = {
           ...data.template,
-          // We keep default blocks but with the template HTML in the first text block
           blocks: [
-            // Header block
             {
               id: `header-${Date.now()}`,
               type: "header",
@@ -83,7 +83,6 @@ export function VisualTemplateBuilder({
               },
               styles: getDefaultStylesForType("header"),
             },
-            // Text block with HTML content
             {
               id: `text-${Date.now()}`,
               type: "text",
@@ -92,7 +91,6 @@ export function VisualTemplateBuilder({
               },
               styles: getDefaultStylesForType("text"),
             },
-            // Add a note that this is converted from HTML editor
             {
               id: `text-html-${Date.now()}`,
               type: "text",
@@ -105,7 +103,6 @@ export function VisualTemplateBuilder({
         };
         setTemplate(convertedTemplate);
 
-        // Notify user about the conversion
         toast.info(
           "Template was originally created in HTML editor. Basic conversion applied.",
           {
@@ -113,7 +110,6 @@ export function VisualTemplateBuilder({
           },
         );
       } else {
-        // Fallback to empty template
         setTemplate({
           ...data.template,
           blocks: defaultBlocks,
@@ -126,12 +122,10 @@ export function VisualTemplateBuilder({
     }
   };
 
-  // Handler for template settings changes
   const handleTemplateChange = (changes: Partial<VisualTemplate>) => {
     setTemplate((prev) => ({ ...prev, ...changes }));
   };
 
-  // Add a new block
   const addBlock = (type: BlockType) => {
     const newBlock: TemplateBlock = {
       id: `${type}-${Date.now()}`,
@@ -148,7 +142,6 @@ export function VisualTemplateBuilder({
     setActiveBlock(newBlock.id);
   };
 
-  // Remove a block
   const removeBlock = (id: string) => {
     setTemplate((prev) => ({
       ...prev,
@@ -160,7 +153,6 @@ export function VisualTemplateBuilder({
     }
   };
 
-  // Move a block up or down
   const moveBlock = (id: string, direction: "up" | "down") => {
     const index = template.blocks.findIndex((block) => block.id === id);
     if (index === -1) return;
@@ -168,13 +160,11 @@ export function VisualTemplateBuilder({
     const newBlocks = [...template.blocks];
 
     if (direction === "up" && index > 0) {
-      // Swap with previous block
       [newBlocks[index - 1], newBlocks[index]] = [
         newBlocks[index],
         newBlocks[index - 1],
       ];
     } else if (direction === "down" && index < newBlocks.length - 1) {
-      // Swap with next block
       [newBlocks[index], newBlocks[index + 1]] = [
         newBlocks[index + 1],
         newBlocks[index],
@@ -187,7 +177,6 @@ export function VisualTemplateBuilder({
     }));
   };
 
-  // Update block content
   const updateBlockContent = (id: string, content: Partial<BlockContent>) => {
     const updatedBlocks = template.blocks.map((block) =>
       block.id === id
@@ -202,7 +191,6 @@ export function VisualTemplateBuilder({
     }));
   };
 
-  // Update block style
   const updateBlockStyle = (id: string, styles: Record<string, string>) => {
     setTemplate((prev) => ({
       ...prev,
@@ -214,15 +202,12 @@ export function VisualTemplateBuilder({
     }));
   };
 
-  // Get the active block
   const getActiveBlock = () => {
     if (!activeBlock) return null;
     return template.blocks.find((block) => block.id === activeBlock) || null;
   };
 
-  // Save the template
   const handleSave = async () => {
-    // Validate required fields
     const errors: string[] = [];
 
     if (!template.name.trim()) {
@@ -245,17 +230,14 @@ export function VisualTemplateBuilder({
     try {
       setIsSaving(true);
 
-      // Generate HTML from blocks
       const html = generateHtml(template.blocks);
 
-      // Create the template data with HTML
       const templateData = {
         ...template,
         html,
         blocks: template.blocks,
       };
 
-      // Ensure senderName is always included
       if (!templateData.variables.includes("senderName")) {
         templateData.variables.push("senderName");
       }
@@ -299,7 +281,6 @@ export function VisualTemplateBuilder({
     }
   };
 
-  // Check if form is valid
   const isFormValid = () => {
     return (
       template.name.trim() !== "" &&
@@ -308,98 +289,200 @@ export function VisualTemplateBuilder({
     );
   };
 
-  // Return loading UI
   if (isLoading) {
-    return <div className="flex justify-center p-6">Loading template...</div>;
+    return (
+      <div className="flex items-center justify-center min-h-[500px]">
+        <div className="text-center space-y-3">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+          <p className="text-gray-600 font-medium">Loading template...</p>
+        </div>
+      </div>
+    );
   }
 
+  const validationErrors = [
+    template.name.trim() === "" && "Template name is required",
+    template.subject.trim() === "" && "Email subject is required",
+    template.blocks.length === 0 && "Add at least one content block",
+  ].filter(Boolean);
+
   return (
-    <div className="space-y-6">
-      {/* Template Settings */}
-      <TemplateSettings template={template} onChange={handleTemplateChange} />
-
-      {/* Template Builder */}
-      <div className="rounded-lg border border-gray-200 p-4">
-        {/* Block Toolbar */}
-        <BlockToolbar onAddBlock={addBlock} />
-
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
-          {/* Email preview */}
-          <div className="col-span-3">
-            <EmailPreview
-              blocks={template.blocks}
-              activeBlock={activeBlock}
-              onSelectBlock={setActiveBlock}
-              onMoveBlock={moveBlock}
-              onRemoveBlock={removeBlock}
-            />
-
-            {template.blocks.length === 0 && (
-              <div className="mt-4 rounded-md bg-yellow-50 p-3 border border-yellow-200 text-sm text-yellow-800">
-                <p className="font-medium">No content blocks added</p>
-                <p className="mt-1 text-xs">
-                  Use the content block options above to add elements to your
-                  template.
-                </p>
-              </div>
-            )}
+    <div className="max-w-[1600px] mx-auto space-y-6">
+      {/* Header Section */}
+      <div className="bg-gradient-to-r from-purple-50 to-blue-50 rounded-2xl p-8 border border-purple-100">
+        <div className="flex items-start gap-4">
+          <div className="p-3 bg-white rounded-xl shadow-sm">
+            <Layers className="w-6 h-6 text-primary" />
           </div>
-
-          {/* Block editor panel */}
-          <div className="col-span-2">
-            <BlockEditor
-              block={getActiveBlock()}
-              onUpdateContent={updateBlockContent}
-              onUpdateStyle={updateBlockStyle}
-            />
+          <div className="flex-1">
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+              {templateId ? "Edit Visual Template" : "Create Visual Template"}
+            </h2>
+            <p className="text-gray-600">
+              Build your email template using drag-and-drop blocks with
+              real-time preview
+            </p>
           </div>
         </div>
       </div>
 
-      <div className="flex justify-between">
-        <div className="flex items-center">
-          {!isFormValid() && (
-            <div className="text-sm text-red-500 mr-3">
-              <span className="font-medium">Please fix the following:</span>
-              <ul className="list-disc list-inside text-xs mt-1">
-                {template.name.trim() === "" && (
-                  <li>Template name is required</li>
-                )}
-                {template.subject.trim() === "" && (
-                  <li>Email subject is required</li>
-                )}
-                {template.blocks.length === 0 && (
-                  <li>Add at least one content block</li>
-                )}
-              </ul>
-            </div>
-          )}
+      {/* Template Settings */}
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        <div className="bg-gradient-to-r from-gray-50 to-blue-50 px-6 py-4 border-b border-gray-200">
+          <div className="flex items-center gap-2">
+            <Sparkles className="w-5 h-5 text-primary" />
+            <h3 className="text-lg font-semibold text-gray-900">
+              Template Settings
+            </h3>
+          </div>
+        </div>
+        <div className="p-6">
+          <TemplateSettings
+            template={template}
+            onChange={handleTemplateChange}
+          />
+        </div>
+      </div>
+
+      {/* Template Builder */}
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        <div className="bg-gradient-to-r from-gray-50 to-purple-50 px-6 py-4 border-b border-gray-200">
+          <div className="flex items-center gap-2">
+            <Layers className="w-5 h-5 text-primary" />
+            <h3 className="text-lg font-semibold text-gray-900">
+              Design Your Email
+            </h3>
+          </div>
         </div>
 
-        <div className="flex space-x-3">
-          <button
-            type="button"
-            onClick={() => router.back()}
-            className="inline-flex justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-          >
-            Cancel
-          </button>
-          <button
-            type="button"
-            onClick={handleSave}
-            disabled={isSaving || !isFormValid()}
-            className={`inline-flex justify-center rounded-md border px-4 py-2 text-sm font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 ${
-              isFormValid()
-                ? "border-transparent bg-primary text-white hover:bg-primary-dark focus:ring-primary"
-                : "border-gray-300 bg-gray-100 text-gray-500 cursor-not-allowed"
-            }`}
-          >
-            {isSaving
-              ? "Saving..."
-              : templateId
-                ? "Update Template"
-                : "Create Template"}
-          </button>
+        <div className="p-6 space-y-6">
+          {/* Block Toolbar */}
+          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-100">
+            <BlockToolbar onAddBlock={addBlock} />
+          </div>
+
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
+            {/* Email preview */}
+            <div className="col-span-3 space-y-4">
+              <div className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl p-1 border-2 border-gray-200">
+                <div className="bg-white rounded-lg overflow-hidden shadow-sm">
+                  <EmailPreview
+                    blocks={template.blocks}
+                    activeBlock={activeBlock}
+                    onSelectBlock={setActiveBlock}
+                    onMoveBlock={moveBlock}
+                    onRemoveBlock={removeBlock}
+                  />
+                </div>
+              </div>
+
+              {template.blocks.length === 0 && (
+                <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-5 border-2 border-amber-200 shadow-sm">
+                  <div className="flex items-start gap-3">
+                    <AlertCircle className="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p className="font-semibold text-amber-900">
+                        No content blocks added
+                      </p>
+                      <p className="mt-1 text-sm text-amber-800">
+                        Use the content block options above to add elements to
+                        your template.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Block editor panel */}
+            <div className="col-span-2">
+              <div className="sticky top-6 bg-gradient-to-br from-gray-50 to-purple-50 rounded-xl p-1 border-2 border-gray-200 shadow-sm">
+                <div className="bg-white rounded-lg overflow-hidden">
+                  <BlockEditor
+                    block={getActiveBlock()}
+                    onUpdateContent={updateBlockContent}
+                    onUpdateStyle={updateBlockStyle}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Action Bar */}
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <div className="flex items-center justify-between gap-4">
+          {/* Validation Messages */}
+          <div className="flex-1">
+            {!isFormValid() && validationErrors.length > 0 && (
+              <div className="bg-red-50 border-2 border-red-200 rounded-lg p-4 shadow-sm">
+                <div className="flex items-start gap-3">
+                  <AlertCircle className="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" />
+                  <div className="flex-1">
+                    <p className="font-semibold text-red-900 text-sm">
+                      Please fix the following issues:
+                    </p>
+                    <ul className="mt-2 space-y-1">
+                      {validationErrors.map((error, index) => (
+                        <li
+                          key={index}
+                          className="text-sm text-red-800 flex items-center gap-2"
+                        >
+                          <span className="w-1.5 h-1.5 bg-red-400 rounded-full"></span>
+                          {error}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            )}
+            {isFormValid() && (
+              <div className="bg-green-50 border-2 border-green-200 rounded-lg p-4 shadow-sm">
+                <div className="flex items-center gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0" />
+                  <p className="font-semibold text-green-900 text-sm">
+                    Template is ready to save!
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => router.back()}
+              className="px-6 py-3 rounded-lg border-2 border-gray-300 bg-white text-gray-700 font-semibold hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-4 focus:ring-gray-200 transition-all flex items-center gap-2"
+            >
+              <X className="w-5 h-5" />
+              Cancel
+            </button>
+            <button
+              type="button"
+              onClick={handleSave}
+              disabled={isSaving || !isFormValid()}
+              className={`px-6 py-3 rounded-lg font-semibold focus:outline-none focus:ring-4 transition-all shadow-sm hover:shadow-md flex items-center gap-2 ${
+                isFormValid()
+                  ? "bg-primary text-white hover:bg-primary-dark focus:ring-primary/20"
+                  : "bg-gray-200 text-gray-500 cursor-not-allowed"
+              }`}
+            >
+              {isSaving ? (
+                <>
+                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  Saving...
+                </>
+              ) : (
+                <>
+                  <Save className="w-5 h-5" />
+                  {templateId ? "Update Template" : "Create Template"}
+                </>
+              )}
+            </button>
+          </div>
         </div>
       </div>
     </div>

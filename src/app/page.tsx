@@ -24,7 +24,7 @@ export default async function Home() {
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-900 border border-slate-800">
                 <div className="w-2 h-2 rounded-full bg-indigo-400"></div>
                 <span className="text-sm font-medium text-slate-400">
-                  Professional Email Platform
+                  Email Platform
                 </span>
               </div>
 
@@ -131,7 +131,7 @@ export default async function Home() {
                       <div className="h-24 bg-slate-700 rounded-lg"></div>
                       <div className="flex justify-center pt-2">
                         <div className="px-6 py-2 bg-indigo-600 rounded-lg text-sm font-medium">
-                          Call to Action
+                          Launch Email
                         </div>
                       </div>
                     </div>

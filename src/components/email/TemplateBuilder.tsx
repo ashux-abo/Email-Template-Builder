@@ -4,8 +4,8 @@ import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import TemplateEditor from "./TemplateEditor";
-import { EmailTemplate } from "@/lib/email-templates";
-import { FileText } from "lucide-react";
+import { EmailTemplate } from "../../lib/email-templates";
+import { FileText, Eye, Code, Sparkles, CheckCircle2 } from "lucide-react";
 
 interface TemplateBuilderProps {
   templateId?: string;
@@ -64,20 +64,17 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({
   };
 
   const handleHtmlChange = (html: string) => {
-    // Trigger preview update animation
     setIsPreviewUpdating(true);
     setTimeout(() => setIsPreviewUpdating(false), 300);
 
     setTemplate((prev) => ({ ...prev, html }));
 
-    // Extract variables from the HTML using regex for {{variable}} pattern
     const variableRegex = /{{([^}]+)}}/g;
     const matches = html.match(variableRegex) || [];
     const extractedVariables = [
       ...new Set(matches.map((match) => match.replace(/{{|}}/g, ""))),
     ];
 
-    // Always include senderName in the variables list
     const variables = extractedVariables.includes("senderName")
       ? extractedVariables
       : [...extractedVariables, "senderName"];
@@ -94,7 +91,6 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({
     try {
       setIsSaving(true);
 
-      // Ensure senderName is always included in variables before saving
       const updatedTemplate = { ...template };
       if (!updatedTemplate.variables.includes("senderName")) {
         updatedTemplate.variables = [
@@ -103,11 +99,8 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({
         ];
       }
 
-      // Preserve the blocks data if it exists
-      // This ensures we don't lose visual editor structure when saving in code editor
       const templateToSave = {
         ...updatedTemplate,
-        // Keep blocks if they exist, but update HTML
         blocks: updatedTemplate.blocks || null,
       };
 
@@ -151,14 +144,19 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({
   };
 
   if (isLoading) {
-    return <div className="flex justify-center p-6">Loading template...</div>;
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-center space-y-3">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+          <p className="text-gray-600 font-medium">Loading template...</p>
+        </div>
+      </div>
+    );
   }
 
-  // Create a preview of the template with sample values for variables
   const getPreviewHtml = () => {
     let html = template.html;
 
-    // Replace variables with sample values
     template.variables.forEach((variable) => {
       const regex = new RegExp(`{{${variable}}}`, "g");
       html = html.replace(regex, `[${variable}]`);
@@ -168,174 +166,248 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({
   };
 
   return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        <div className="space-y-4">
-          <div>
-            <label
-              htmlFor="name"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Template Name
-            </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={template.name}
-              onChange={handleInputChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary"
-              placeholder="e.g., Welcome Email"
-              required
-            />
+    <div className="max-w-7xl mx-auto space-y-8">
+      {/* Header Section */}
+      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-8 border border-blue-100">
+        <div className="flex items-start gap-4">
+          <div className="p-3 bg-white rounded-xl shadow-sm">
+            <FileText className="w-6 h-6 text-primary" />
           </div>
-
-          <div>
-            <label
-              htmlFor="description"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Description
-            </label>
-            <textarea
-              id="description"
-              name="description"
-              value={template.description}
-              onChange={handleInputChange}
-              rows={3}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary"
-              placeholder="Brief description of this template"
-              required
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="subject"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Email Subject
-            </label>
-            <input
-              type="text"
-              id="subject"
-              name="subject"
-              value={template.subject}
-              onChange={handleInputChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary"
-              placeholder="e.g., Welcome to Our Service!"
-              required
-            />
-          </div>
-
-          <div className="flex items-start">
-            <div className="flex h-5 items-center">
-              <input
-                id="isPublic"
-                name="isPublic"
-                type="checkbox"
-                checked={template.isPublic}
-                onChange={handleCheckboxChange}
-                className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
-              />
-            </div>
-            <div className="ml-3 text-sm">
-              <label htmlFor="isPublic" className="font-medium text-gray-700">
-                Make this template public
-              </label>
-              <p className="text-gray-500">
-                Public templates are available to all users of the system
-              </p>
-            </div>
+          <div className="flex-1">
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+              {templateId ? "Edit Email Template" : "Create New Template"}
+            </h2>
+            <p className="text-gray-600">
+              Design and customize your email template with dynamic variables
+              and live preview
+            </p>
           </div>
         </div>
+      </div>
 
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Detected Variables
-            </label>
-            <div className="mt-1 rounded-md border border-gray-300 bg-gray-50 p-3">
+      {/* Main Content Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Left Column - Template Details */}
+        <div className="space-y-6">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 space-y-6">
+            <div className="flex items-center gap-2 mb-4">
+              <Sparkles className="w-5 h-5 text-primary" />
+              <h3 className="text-lg font-semibold text-gray-900">
+                Template Details
+              </h3>
+            </div>
+
+            <div className="space-y-5">
+              <div>
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-semibold text-gray-700 mb-2"
+                >
+                  Template Name
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={template.name}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none text-gray-900 placeholder-gray-400"
+                  placeholder="e.g., Welcome Email"
+                  required
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="description"
+                  className="block text-sm font-semibold text-gray-700 mb-2"
+                >
+                  Description
+                </label>
+                <textarea
+                  id="description"
+                  name="description"
+                  value={template.description}
+                  onChange={handleInputChange}
+                  rows={3}
+                  className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none text-gray-900 placeholder-gray-400 resize-none"
+                  placeholder="Brief description of this template"
+                  required
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="subject"
+                  className="block text-sm font-semibold text-gray-700 mb-2"
+                >
+                  Email Subject
+                </label>
+                <input
+                  type="text"
+                  id="subject"
+                  name="subject"
+                  value={template.subject}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-3 rounded-lg border-2 border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none text-gray-900 placeholder-gray-400"
+                  placeholder="e.g., Welcome to Our Service!"
+                  required
+                />
+              </div>
+
+              <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                <div className="flex items-start gap-3">
+                  <input
+                    id="isPublic"
+                    name="isPublic"
+                    type="checkbox"
+                    checked={template.isPublic}
+                    onChange={handleCheckboxChange}
+                    className="mt-1 h-5 w-5 rounded border-gray-300 text-primary focus:ring-primary cursor-pointer"
+                  />
+                  <div className="flex-1">
+                    <label
+                      htmlFor="isPublic"
+                      className="font-semibold text-gray-900 cursor-pointer block"
+                    >
+                      Make this template public
+                    </label>
+                    <p className="text-sm text-gray-600 mt-1">
+                      Public templates are available to all users of the system
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Variables Section */}
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div className="flex items-center gap-2 mb-4">
+              <Code className="w-5 h-5 text-primary" />
+              <h3 className="text-lg font-semibold text-gray-900">
+                Detected Variables
+              </h3>
+            </div>
+
+            <div className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-lg p-4 border border-gray-200">
               {template.variables.length > 0 ? (
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2 mb-3">
                   {template.variables.map((variable) => (
                     <span
                       key={variable}
-                      className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                      className={`inline-flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium transition-all ${
                         variable === "senderName"
-                          ? "bg-green-100 text-green-800 border border-green-300"
-                          : "bg-primary/10 text-primary"
+                          ? "bg-green-100 text-green-800 border-2 border-green-300 shadow-sm"
+                          : "bg-white text-primary border-2 border-primary/20 shadow-sm"
                       }`}
                     >
-                      {variable}
+                      <span className="font-mono">{variable}</span>
                       {variable === "senderName" && (
-                        <span
-                          className="ml-1"
+                        <CheckCircle2
+                          className="w-4 h-4"
                           title="Used for From field in emails"
-                        >
-                          *
-                        </span>
+                        />
                       )}
                     </span>
                   ))}
                 </div>
               ) : (
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-gray-600 mb-3">
                   No variables detected. Add variables using{" "}
-                  {"{{variableName}}"} syntax in your template.
+                  <code className="bg-white px-2 py-1 rounded text-primary font-mono text-xs border border-gray-200">
+                    {"{{variableName}}"}
+                  </code>{" "}
+                  syntax in your template.
                 </p>
               )}
-              <p className="mt-2 text-xs text-gray-500">
-                Note: <span className="font-medium">senderName</span> is
-                automatically included and will be used as the "From" name in
-                emails.
-              </p>
+              <div className="bg-blue-100 border border-blue-200 rounded-lg p-3">
+                <p className="text-xs text-blue-900 flex items-start gap-2">
+                  <CheckCircle2 className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                  <span>
+                    <span className="font-semibold">senderName</span> is
+                    automatically included and will be used as the "From" name
+                    in emails.
+                  </span>
+                </p>
+              </div>
             </div>
           </div>
+        </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Preview
+        {/* Right Column - Preview */}
+        <div className="space-y-6">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 sticky top-6">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <Eye className="w-5 h-5 text-primary" />
+                <h3 className="text-lg font-semibold text-gray-900">
+                  Live Preview
+                </h3>
+              </div>
               {isPreviewUpdating && (
-                <span className="ml-2 text-xs text-blue-500">Updating...</span>
+                <span className="inline-flex items-center gap-1.5 text-xs font-medium text-blue-600 bg-blue-50 px-3 py-1.5 rounded-full">
+                  <div className="w-2 h-2 bg-blue-600 rounded-full animate-pulse"></div>
+                  Updating...
+                </span>
               )}
-            </label>
+            </div>
+
             <div
-              className={`mt-1 rounded-md border border-gray-300 bg-white p-3 transition-all duration-300 ${isPreviewUpdating ? "border-blue-300 shadow-sm" : ""}`}
+              className={`rounded-lg border-2 bg-gray-50 p-1 transition-all duration-300 ${
+                isPreviewUpdating
+                  ? "border-blue-300 shadow-lg shadow-blue-100"
+                  : "border-gray-200"
+              }`}
             >
-              <iframe
-                title="Email Preview"
-                srcDoc={getPreviewHtml()}
-                className="h-[300px] w-full rounded border"
-              />
+              <div className="bg-white rounded-md overflow-hidden shadow-sm">
+                <iframe
+                  title="Email Preview"
+                  srcDoc={getPreviewHtml()}
+                  className="w-full h-[500px] border-0"
+                />
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="col-span-2">
-        <label className="block text-sm font-medium text-gray-700">
-          Template HTML
-        </label>
+      {/* Template HTML Editor */}
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <div className="flex items-center gap-2 mb-4">
+          <Code className="w-5 h-5 text-primary" />
+          <h3 className="text-lg font-semibold text-gray-900">Template HTML</h3>
+        </div>
+
         <TemplateEditor
           initialContent={template.html}
           onChange={handleHtmlChange}
         />
-        <p className="mt-1 text-xs text-gray-500">
-          Use {"{{variableName}}"} syntax to define dynamic content.
-          <span className="font-medium text-primary">
-            {" "}
-            {"{{senderName}}"}
-          </span>{" "}
-          is a special variable used for the "From" name in emails.
-        </p>
+
+        <div className="mt-3 bg-amber-50 border border-amber-200 rounded-lg p-3">
+          <p className="text-sm text-amber-900 flex items-start gap-2">
+            <span className="text-lg">💡</span>
+            <span>
+              Use{" "}
+              <code className="bg-white px-2 py-0.5 rounded text-primary font-mono text-xs border border-amber-200">
+                {"{{variableName}}"}
+              </code>{" "}
+              syntax to define dynamic content.
+              <code className="bg-white px-2 py-0.5 rounded text-green-700 font-mono text-xs border border-amber-200 ml-1">
+                {"{{senderName}}"}
+              </code>{" "}
+              is a special variable used for the "From" name in emails.
+            </span>
+          </p>
+        </div>
       </div>
 
-      <div className="flex justify-end space-x-3">
+      {/* Action Buttons */}
+      <div className="flex justify-end items-center gap-3 pb-8">
         <button
           type="button"
           onClick={() => router.back()}
-          className="inline-flex justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+          className="px-6 py-3 rounded-lg border-2 border-gray-300 bg-white text-gray-700 font-semibold hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-4 focus:ring-gray-200 transition-all"
         >
           Cancel
         </button>
@@ -343,13 +415,19 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({
           type="button"
           onClick={handleSave}
           disabled={isSaving}
-          className="inline-flex justify-center rounded-md border border-transparent bg-primary px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+          className="px-6 py-3 rounded-lg bg-primary text-white font-semibold hover:bg-primary-dark focus:outline-none focus:ring-4 focus:ring-primary/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md flex items-center gap-2"
         >
-          {isSaving
-            ? "Saving..."
-            : templateId
-              ? "Update Template"
-              : "Create Template"}
+          {isSaving ? (
+            <>
+              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              Saving...
+            </>
+          ) : (
+            <>
+              <CheckCircle2 className="w-5 h-5" />
+              {templateId ? "Update Template" : "Create Template"}
+            </>
+          )}
         </button>
       </div>
     </div>
