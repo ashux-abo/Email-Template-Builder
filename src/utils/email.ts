@@ -108,7 +108,7 @@ async function getCompiledTemplate(
   variables: Record<string, string>,
 ): Promise<{ subject: string; html: string }> {
   // Import dynamically to avoid circular dependencies
-  const { getTemplateById } = await import("@/lib/email-templates");
+  const { getTemplateById } = await import("../lib/email-templates");
 
   const template = getTemplateById(templateId);
 
@@ -116,7 +116,13 @@ async function getCompiledTemplate(
     throw new Error(`Template with ID ${templateId} not found`);
   }
 
-  return compileTemplate(template, variables);
+  const compiledSubject = compileTemplate(template.subject, variables);
+  const compiledHtml = compileTemplate(template.html, variables);
+
+  return {
+    subject: compiledSubject,
+    html: compiledHtml,
+  };
 }
 
 /**
