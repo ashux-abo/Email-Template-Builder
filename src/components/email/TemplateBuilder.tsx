@@ -305,10 +305,9 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({
                     >
                       <span className="font-mono">{variable}</span>
                       {variable === "senderName" && (
-                        <CheckCircle2
-                          className="w-4 h-4"
-                          title="Used for From field in emails"
-                        />
+                        <span title="Used for From field in emails">
+                          <CheckCircle2 className="w-4 h-4" />
+                        </span>
                       )}
                     </span>
                   ))}
