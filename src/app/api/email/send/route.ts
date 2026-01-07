@@ -45,12 +45,10 @@ export async function POST(request: NextRequest) {
     }
 
     // Custom validation schema that doesn't require subject
-    // Custom validation schema that doesn't require subject
     const sendEmailSchema = z.object({
-      templateId: z.string({
-        invalid_type_error: "Template ID must be a string",
-        required_error: "Please select a template",
-      }),
+      // Using .min(1) to handle "required" and passing the message there
+      templateId: z.string().min(1, "Please select a template"),
+
       recipients: z
         .string()
         .min(1, "At least one recipient is required") // Simplified error message passing
