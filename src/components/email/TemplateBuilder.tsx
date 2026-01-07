@@ -28,6 +28,7 @@ const TemplateBuilder: React.FC<TemplateBuilderProps> = ({
     css: defaultCss,
     variables: [] as string[],
     isPublic: false,
+    blocks: null as any,
   });
 
   useEffect(() => {
