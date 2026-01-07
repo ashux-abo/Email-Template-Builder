@@ -13,7 +13,7 @@ const sendNotificationSchema = z.object({
   subject: z.string().optional(),
   message: z.string(),
   userId: z.string().optional(),
-  data: z.record(z.any()).optional(),
+  data: z.record(z.string(), z.any()).optional(),
 });
 
 export async function POST(request: NextRequest) {
