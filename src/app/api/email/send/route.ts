@@ -45,13 +45,18 @@ export async function POST(request: NextRequest) {
     }
 
     // Custom validation schema that doesn't require subject
+    // Custom validation schema that doesn't require subject
     const sendEmailSchema = z.object({
-      templateId: z.string({ required_error: "Please select a template" }),
+      templateId: z.string({
+        invalid_type_error: "Template ID must be a string",
+        required_error: "Please select a template",
+      }),
       recipients: z
         .string()
-        .min(1, { message: "At least one recipient is required" })
+        .min(1, "At least one recipient is required") // Simplified error message passing
         .refine(
           (emails) => {
+            if (!emails) return false;
             const emailList = emails.split(",").map((e) => e.trim());
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             return emailList.every((email) => emailRegex.test(email));
@@ -61,7 +66,8 @@ export async function POST(request: NextRequest) {
       variables: z
         .record(z.string(), z.string())
         .refine(
-          (data) => Object.values(data).every((value) => value.trim() !== ""),
+          (data) =>
+            Object.values(data).every((value) => value && value.trim() !== ""),
           {
             message: "All template variables must be filled out",
           },
