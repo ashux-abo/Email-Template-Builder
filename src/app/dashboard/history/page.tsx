@@ -271,11 +271,8 @@ export default function EmailHistoryPage() {
             <div>
               <Select
                 value={statusFilter}
-                onValueChange={(value: string) => setStatusFilter(value)}
+                onChange={(e) => setStatusFilter(e.target.value)}
               >
-                <SelectTrigger>
-                  <SelectValue placeholder="Filter by status" />
-                </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Statuses</SelectItem>
                   <SelectItem value="success">Delivered</SelectItem>
