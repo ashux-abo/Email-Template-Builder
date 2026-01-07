@@ -7,32 +7,25 @@ import { getUserFromRequest } from "../../../../lib/auth";
 // GET - Fetch a specific contact
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> }, // 1. Updated Type
 ) {
   try {
+    const { id } = await params; // 2. Await the promise
     await connectDB();
 
-    // Get the authenticated user
     const user = await getUserFromRequest(request);
-
-    // If no user is found, return unauthorized
     if (!user || !user.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Validate the ID
-    if (!mongoose.Types.ObjectId.isValid(params.id)) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
       return NextResponse.json(
         { error: "Invalid contact ID" },
         { status: 400 },
       );
     }
 
-    // Find the contact
-    const contact = await Contact.findOne({
-      _id: params.id,
-      userId: user.id,
-    });
+    const contact = await Contact.findOne({ _id: id, userId: user.id });
 
     if (!contact) {
       return NextResponse.json({ error: "Contact not found" }, { status: 404 });
@@ -51,31 +44,25 @@ export async function GET(
 // PUT - Update a contact
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> }, // 1. Updated Type
 ) {
   try {
+    const { id } = await params; // 2. Await the promise
     await connectDB();
 
-    // Get the authenticated user
     const user = await getUserFromRequest(request);
-
-    // If no user is found, return unauthorized
     if (!user || !user.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Validate the ID
-    if (!mongoose.Types.ObjectId.isValid(params.id)) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
       return NextResponse.json(
         { error: "Invalid contact ID" },
         { status: 400 },
       );
     }
 
-    // Parse the request body
     const data = await request.json();
-
-    // Validate required fields
     if (!data.name || !data.email) {
       return NextResponse.json(
         { error: "Name and email are required" },
@@ -83,7 +70,6 @@ export async function PUT(
       );
     }
 
-    // Process tags if they exist
     let tags = data.tags;
     if (typeof data.tags === "string") {
       tags = data.tags
@@ -92,9 +78,8 @@ export async function PUT(
         .filter(Boolean);
     }
 
-    // Find and update the contact
     const updatedContact = await Contact.findOneAndUpdate(
-      { _id: params.id, userId: user.id },
+      { _id: id, userId: user.id },
       {
         name: data.name,
         email: data.email,
@@ -111,15 +96,12 @@ export async function PUT(
     return NextResponse.json({ contact: updatedContact });
   } catch (error: any) {
     console.error("Error updating contact:", error);
-
-    // Handle duplicate key error
     if (error.code === 11000) {
       return NextResponse.json(
         { error: "A contact with this email already exists" },
         { status: 400 },
       );
     }
-
     return NextResponse.json(
       { error: "Failed to update contact" },
       { status: 500 },
@@ -130,30 +112,26 @@ export async function PUT(
 // DELETE - Delete a contact
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> }, // 1. Updated Type
 ) {
   try {
+    const { id } = await params; // 2. Await the promise
     await connectDB();
 
-    // Get the authenticated user
     const user = await getUserFromRequest(request);
-
-    // If no user is found, return unauthorized
     if (!user || !user.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Validate the ID
-    if (!mongoose.Types.ObjectId.isValid(params.id)) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
       return NextResponse.json(
         { error: "Invalid contact ID" },
         { status: 400 },
       );
     }
 
-    // Find and delete the contact
     const deletedContact = await Contact.findOneAndDelete({
-      _id: params.id,
+      _id: id,
       userId: user.id,
     });
 
