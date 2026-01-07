@@ -1,15 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getTemplates, getTemplateById } from "../../../lib/email-templates";
+import { getTemplates } from "../../../lib/email-templates";
 import EmailTemplate from "../../../models/EmailTemplate";
 import { getUserFromRequest } from "../../../lib/auth";
-import dbConnect from "../../../lib/db";
-import { EmailTemplate as PredefinedTemplate } from "../../../lib/email-templates";
 import connectDB from "../../../lib/db";
 
-// ... (keep normalizeTemplate as is)
-// function normalizeTemplate(template: any) {
+// Helper function to normalize template objects
+// Moved to top level and fixed syntax
+function normalizeTemplate(template: any) {
   if (!template) return null;
 
+  // If it's a database template with _id, add an id property too
   if (template._id && !template.id) {
     return {
       ...template,
@@ -24,16 +24,19 @@ export async function GET(request: NextRequest) {
   try {
     await connectDB();
 
+    // Get the authenticated user
     const user = await getUserFromRequest(request);
 
+    // If no user is found, return unauthorized
     if (!user || !user.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    // Check if we should include predefined templates
     const { searchParams } = new URL(request.url);
     const includePredefined = searchParams.get("includeDefault") !== "false";
 
-    // FIX: Explicitly type the array to prevent the "implicitly has type any" error
+    // EXPLICIT TYPE: Prevents "implicitly has type any[]" error
     let allTemplates: any[] = [];
 
     if (includePredefined) {
@@ -44,16 +47,22 @@ export async function GET(request: NextRequest) {
       allTemplates = [...predefinedTemplates];
     }
 
+    // Query options to get user's own templates and public templates from others
     const query = {
-      $or: [{ userId: user.id }, { isPublic: true, userId: { $ne: user.id } }],
+      $or: [
+        { userId: user.id }, // User's own templates
+        { isPublic: true, userId: { $ne: user.id } }, // Public templates from others
+      ],
     };
 
+    // Get templates from database
     const databaseTemplates = await EmailTemplate.find(query)
       .select(
         "_id name description subject isPublic userId createdAt variables",
       )
       .sort({ createdAt: -1 });
 
+    // Transform database templates to match the format
     const transformedDbTemplates = databaseTemplates.map((template) => {
       const templateObj = template.toObject ? template.toObject() : template;
       return {
@@ -64,6 +73,7 @@ export async function GET(request: NextRequest) {
       };
     });
 
+    // Merge results
     allTemplates = [...allTemplates, ...transformedDbTemplates];
 
     return NextResponse.json({ templates: allTemplates });
@@ -78,16 +88,17 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    // FIX: Ensure consistency with await
+    // Await ensures consistency for Next.js 16 build checks
     const currentUser = await getUserFromRequest(request);
 
     if (!currentUser) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    await dbConnect();
+    await connectDB();
     const data = await request.json();
 
+    // Handle content field - map it to html field
     if (data.content && !data.html) {
       data.html = data.content;
       delete data.content;
@@ -100,9 +111,12 @@ export async function POST(request: NextRequest) {
 
     const savedTemplate = await template.save();
 
+    // Make sure to include content in the response
     const savedTemplateObj = savedTemplate.toObject
       ? savedTemplate.toObject()
       : savedTemplate;
+
+    // This call will now work because normalizeTemplate is correctly defined above
     const normalizedTemplate = normalizeTemplate(savedTemplateObj);
 
     return NextResponse.json(
@@ -110,7 +124,7 @@ export async function POST(request: NextRequest) {
         message: "Template created successfully",
         template: {
           ...normalizedTemplate,
-          content: savedTemplateObj.html,
+          content: savedTemplateObj.html, // Add content field to the response
         },
       },
       { status: 201 },
