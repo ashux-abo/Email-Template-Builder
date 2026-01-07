@@ -7,6 +7,18 @@ import { EmailTemplate as PredefinedTemplate } from "../../../lib/email-template
 import connectDB from "../../../lib/db";
 
 // ... (keep normalizeTemplate as is)
+// function normalizeTemplate(template: any) {
+  if (!template) return null;
+
+  if (template._id && !template.id) {
+    return {
+      ...template,
+      id: template._id.toString(),
+    };
+  }
+
+  return template;
+}
 
 export async function GET(request: NextRequest) {
   try {
