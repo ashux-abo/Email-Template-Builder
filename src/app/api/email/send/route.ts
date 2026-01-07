@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
     await dbConnect();
 
     // Check authentication
-    const user = getUserFromRequest(request);
+    const user = await getUserFromRequest(request);
     if (!user) {
       return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
     }
@@ -104,7 +104,6 @@ export async function POST(request: NextRequest) {
       templateId,
       variables,
       recipients,
-      template, // Pass the full template to avoid fetching it again
     });
 
     if (!result.success) {

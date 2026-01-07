@@ -35,6 +35,7 @@ interface SendEmailParams {
   templateId: string;
   variables: Record<string, string>;
   recipients: string[];
+  template?: any;
 }
 
 /**
@@ -45,15 +46,18 @@ export async function sendEmail({
   templateId,
   variables,
   recipients,
+  template,
 }: SendEmailParams): Promise<{ success: boolean; message: string }> {
   try {
-    // Get the email template
-    const { subject, html } = await getCompiledTemplate(templateId, variables);
+    // 3. Pass the template to getCompiledTemplate
+    const { subject, html } = await getCompiledTemplate(
+      templateId,
+      variables,
+      template,
+    );
 
-    // Create transporter
     const transporter = createTransporter();
 
-    // Send mail
     const info = await transporter.sendMail({
       from: `"Email Sender" <${EMAIL_USER}>`,
       to: recipients.join(", "),
@@ -106,11 +110,14 @@ export async function sendEmail({
 async function getCompiledTemplate(
   templateId: string,
   variables: Record<string, string>,
+  passedTemplate?: any,
 ): Promise<{ subject: string; html: string }> {
+  let template = passedTemplate;
   // Import dynamically to avoid circular dependencies
-  const { getTemplateById } = await import("../lib/email-templates");
-
-  const template = getTemplateById(templateId);
+  if (!template) {
+    const { getTemplateById } = await import("../lib/email-templates");
+    template = getTemplateById(templateId);
+  }
 
   if (!template) {
     throw new Error(`Template with ID ${templateId} not found`);
