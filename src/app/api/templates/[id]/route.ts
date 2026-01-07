@@ -20,10 +20,8 @@ function normalizeTemplate(template: any) {
   return template;
 }
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } },
-) {
+export async function GET(request: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
     await connectDB();
 
@@ -98,10 +96,8 @@ export async function GET(
 
 export const dynamic = "force-dynamic";
 
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: { id: string } },
-) {
+export async function PATCH(request: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
     const currentUser = await getUserFromRequest(request);
 
@@ -160,10 +156,8 @@ export async function PATCH(
   }
 }
 
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } },
-) {
+export async function DELETE(request: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
     const currentUser = await getUserFromRequest(request);
 

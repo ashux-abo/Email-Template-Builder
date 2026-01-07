@@ -11,10 +11,8 @@ interface EmailHistoryDoc extends IEmailHistory {
   _id: mongoose.Types.ObjectId;
 }
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } },
-) {
+export async function GET(request: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
     // Get user from request
     const user = await getUserFromRequest(request);
