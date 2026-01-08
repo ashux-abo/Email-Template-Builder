@@ -8,7 +8,24 @@ import { registerSchema } from "../../../../utils/validation";
 
 export async function POST(request: Request) {
   try {
-    await connectDB();
+    // Connect to DB with error handling
+    try {
+      console.log("Connecting to database for registration...");
+      await connectDB();
+      console.log("Database connection successful");
+    } catch (dbError: any) {
+      console.error("Database connection error:", dbError);
+      return NextResponse.json(
+        {
+          error: "Database connection failed",
+          message: dbError.message || "Failed to connect to database",
+          hint: process.env.NODE_ENV === "production" 
+            ? "Please check your MONGODB_URI environment variable in Vercel settings."
+            : "Please check your MONGODB_URI in your .env file.",
+        },
+        { status: 500 },
+      );
+    }
 
     const body = await request.json();
 

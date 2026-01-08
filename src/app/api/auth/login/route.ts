@@ -16,14 +16,27 @@ export async function POST(request: Request) {
     // Connect to DB
     try {
       console.log("Connecting to database...");
+      console.log("MONGODB_URI exists:", !!process.env.MONGODB_URI);
       await connectDB();
       console.log("Database connection successful");
     } catch (dbError: any) {
       console.error("Database connection error:", dbError);
+      console.error("Error details:", {
+        message: dbError.message,
+        name: dbError.name,
+        stack: dbError.stack,
+      });
+      
+      // Provide user-friendly error message
+      const errorMessage = dbError.message || "Database connection failed";
+      
       return NextResponse.json(
         {
           error: "Database connection failed",
-          details: dbError.message,
+          message: errorMessage,
+          hint: process.env.NODE_ENV === "production" 
+            ? "Please check your MONGODB_URI environment variable in Vercel settings."
+            : "Please check your MONGODB_URI in your .env file.",
         },
         { status: 500 },
       );

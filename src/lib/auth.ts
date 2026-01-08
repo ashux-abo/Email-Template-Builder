@@ -157,14 +157,18 @@ export async function createSession(
  * Set auth cookie with JWT token
  */
 export function setAuthCookie(res: NextResponse, token: string): void {
+  // On Vercel, we need secure cookies for HTTPS
+  const isProduction = process.env.NODE_ENV === "production" || process.env.VERCEL === "1";
+  
   res.cookies.set({
     name: "token",
     value: token,
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
+    secure: isProduction, // Secure cookies required for HTTPS on Vercel
+    sameSite: "lax", // Allows cookies to be sent with top-level navigations
     maxAge: 7 * 24 * 60 * 60, // 7 days
     path: "/",
+    // Don't set domain - let browser use default (works for all subdomains)
   });
 }
 
@@ -172,11 +176,13 @@ export function setAuthCookie(res: NextResponse, token: string): void {
  * Clear auth cookie
  */
 export function clearAuthCookie(res: NextResponse): void {
+  const isProduction = process.env.NODE_ENV === "production" || process.env.VERCEL === "1";
+  
   res.cookies.set({
     name: "token",
     value: "",
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: isProduction,
     sameSite: "lax",
     maxAge: 0,
     path: "/",
