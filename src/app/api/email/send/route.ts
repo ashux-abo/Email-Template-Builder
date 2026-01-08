@@ -21,13 +21,28 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
 
     // Get template to validate required variables
+    console.log("Looking for template with ID:", body.templateId);
     const template = await getTemplateByIdWithDb(body.templateId);
+    console.log("Template found:", template ? "Yes" : "No");
+    
     if (!template) {
+      console.error(`Template with ID ${body.templateId} not found`);
       return NextResponse.json(
-        { error: "Template not found" },
+        { 
+          error: `Template with ID ${body.templateId} not found`,
+          templateId: body.templateId,
+        },
         { status: 404 },
       );
     }
+    
+    console.log("Template details:", {
+      id: template.id,
+      name: template.name,
+      hasHtml: !!template.html,
+      hasContent: !!template.content,
+      variables: template.variables,
+    });
 
     // Check if all required variables are provided
     const missingVariables = template.variables.filter(
@@ -98,12 +113,13 @@ export async function POST(request: NextRequest) {
     } = validationResult.data;
     const recipients = recipientsString.split(",").map((email) => email.trim());
 
-    // Send the email
+    // Send the email (pass the template to avoid refetching)
     const result = await sendEmail({
       userId: user.id,
       templateId,
       variables,
       recipients,
+      template, // Pass the already-fetched template
     });
 
     if (!result.success) {

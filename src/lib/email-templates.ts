@@ -246,10 +246,27 @@ export async function getTemplateFromDb(id: string): Promise<any> {
     const connectDB = (await import("../lib/db")).default;
     await connectDB();
     
+    // Validate MongoDB ObjectId format
+    if (!id || typeof id !== "string" || id.length !== 24) {
+      console.error("Invalid template ID format:", id);
+      return null;
+    }
+    
     const template = await EmailTemplate.findById(id);
+    
+    if (!template) {
+      console.log(`Template with ID ${id} not found in database`);
+      return null;
+    }
+    
+    console.log(`Template found in database: ${template.name} (${id})`);
     return template;
-  } catch (error) {
-    console.error("Error fetching template from database:", error);
+  } catch (error: any) {
+    console.error("Error fetching template from database:", {
+      id,
+      error: error.message,
+      stack: error.stack,
+    });
     return null;
   }
 }

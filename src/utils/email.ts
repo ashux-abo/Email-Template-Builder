@@ -115,16 +115,25 @@ async function getCompiledTemplate(
   let template = passedTemplate;
   // Import dynamically to avoid circular dependencies
   if (!template) {
-    const { getTemplateById } = await import("../lib/email-templates");
-    template = getTemplateById(templateId);
+    // Use getTemplateByIdWithDb to support both predefined and database templates
+    const { getTemplateByIdWithDb } = await import("../lib/email-templates");
+    template = await getTemplateByIdWithDb(templateId);
   }
 
   if (!template) {
     throw new Error(`Template with ID ${templateId} not found`);
   }
 
-  const compiledSubject = compileTemplate(template.subject, variables);
-  const compiledHtml = compileTemplate(template.html, variables);
+  // Ensure we have html content (use content field if html is missing)
+  const htmlContent = template.html || template.content || "";
+  const subjectContent = template.subject || "";
+
+  if (!htmlContent) {
+    throw new Error(`Template with ID ${templateId} has no HTML content`);
+  }
+
+  const compiledSubject = compileTemplate(subjectContent, variables);
+  const compiledHtml = compileTemplate(htmlContent, variables);
 
   return {
     subject: compiledSubject,
