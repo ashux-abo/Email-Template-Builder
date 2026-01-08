@@ -124,7 +124,11 @@ export async function POST(request: NextRequest) {
         message: "Template created successfully",
         template: {
           ...normalizedTemplate,
+          id: savedTemplateObj._id.toString(), // Ensure ID is always included
+          _id: savedTemplateObj._id.toString(), // Keep _id for compatibility
           content: savedTemplateObj.html, // Add content field to the response
+          html: savedTemplateObj.html, // Ensure html is included
+          userId: savedTemplateObj.userId.toString(), // Include userId
         },
       },
       { status: 201 },

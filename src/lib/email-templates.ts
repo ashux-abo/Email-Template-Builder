@@ -242,6 +242,10 @@ export function getTemplateById(id: string): EmailTemplate | undefined {
  */
 export async function getTemplateFromDb(id: string): Promise<any> {
   try {
+    // Ensure database connection
+    const connectDB = (await import("../lib/db")).default;
+    await connectDB();
+    
     const template = await EmailTemplate.findById(id);
     return template;
   } catch (error) {
@@ -282,16 +286,24 @@ export async function getTemplateByIdWithDb(
 
   // Then check database
   try {
+    // Ensure database connection
+    const connectDB = (await import("../lib/db")).default;
+    await connectDB();
+    
     const dbTemplate = await getTemplateFromDb(id);
     if (dbTemplate) {
+      const templateObj = dbTemplate.toObject ? dbTemplate.toObject() : dbTemplate;
       return {
-        id: dbTemplate._id.toString(),
-        name: dbTemplate.name,
-        description: dbTemplate.description,
-        subject: dbTemplate.subject,
-        html: dbTemplate.html,
-        variables: dbTemplate.variables,
-        defaultValues: dbTemplate.defaultValues || {},
+        id: templateObj._id.toString(),
+        name: templateObj.name,
+        description: templateObj.description,
+        subject: templateObj.subject,
+        html: templateObj.html || "",
+        content: templateObj.html || "",
+        variables: templateObj.variables || [],
+        defaultValues: templateObj.defaultValues || {},
+        userId: templateObj.userId?.toString(),
+        isPublic: templateObj.isPublic || false,
       };
     }
   } catch (error) {

@@ -139,12 +139,17 @@ export async function PATCH(request: NextRequest, props: { params: Promise<{ id:
 
     await template.save();
 
+    const updatedTemplateObj = template.toObject ? template.toObject() : template;
+
     return NextResponse.json({
       message: "Template updated",
       template: {
-        ...template.toObject(),
-        id: template._id.toString(),
-        content: template.html,
+        ...updatedTemplateObj,
+        id: updatedTemplateObj._id.toString(),
+        _id: updatedTemplateObj._id.toString(),
+        content: updatedTemplateObj.html,
+        html: updatedTemplateObj.html,
+        userId: updatedTemplateObj.userId.toString(),
       },
     });
   } catch (error: any) {
