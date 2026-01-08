@@ -13,3 +13,16 @@ Prerequisites
 A modern web browser.
 (Optional) Node.js installed if using a backend.
 
+1. Clone this repository:
+https://github.com/ashux-abo/Email-Sender.git
+
+2. Navigate to the project folder:
+cd email-sender
+
+# Project Background
+This project was developed as a requirement for clearance and as an initiative to upskill in modern web development.
+The primary goal of this project:
+Improve UI/UX principles through real-time previews.
+Improve logic for handling email templates.
+Demonstrate proficiency in secure data handling.
+
