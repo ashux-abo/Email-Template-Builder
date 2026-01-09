@@ -94,12 +94,9 @@ export default function DashboardPage() {
       </div>
 
       <div className="bg-gray-50 rounded-lg p-6 border">
-        <div className="mb-4 flex items-center">
-          <Mail className="h-6 w-6 text-primary mr-2" />
-          <DashboardContent
-            isDevelopment={process.env.NODE_ENV === "development"}
-          />
-        </div>
+        <DashboardContent
+          isDevelopment={process.env.NODE_ENV === "development"}
+        />
       </div>
     </div>
   );
