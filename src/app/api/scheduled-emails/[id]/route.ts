@@ -8,7 +8,7 @@ import { getUserFromRequest } from "../../../../lib/auth";
 // GET - Fetch a specific scheduled email
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> }, // Changed to Promise
 ) {
   try {
     await connectDB();
@@ -21,14 +21,17 @@ export async function GET(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    // Await params before using
+    const { id } = await params;
+
     // Validate ID format
-    if (!mongoose.Types.ObjectId.isValid(params.id)) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
       return NextResponse.json({ error: "Invalid ID format" }, { status: 400 });
     }
 
     // Find the scheduled email
     const scheduledEmail = await ScheduledEmail.findOne({
-      _id: params.id,
+      _id: id,
       userId: user.id,
     });
 
@@ -52,7 +55,7 @@ export async function GET(
 // PUT - Update a scheduled email
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> }, // Changed to Promise
 ) {
   try {
     await connectDB();
@@ -65,8 +68,11 @@ export async function PUT(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    // Await params before using
+    const { id } = await params;
+
     // Validate ID format
-    if (!mongoose.Types.ObjectId.isValid(params.id)) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
       return NextResponse.json({ error: "Invalid ID format" }, { status: 400 });
     }
 
@@ -75,7 +81,7 @@ export async function PUT(
 
     // Find the scheduled email
     const scheduledEmail = await ScheduledEmail.findOne({
-      _id: params.id,
+      _id: id,
       userId: user.id,
     });
 
@@ -106,7 +112,7 @@ export async function PUT(
 
     // Update the scheduled email
     const updatedEmail = await ScheduledEmail.findByIdAndUpdate(
-      params.id,
+      id,
       { $set: updateData },
       { new: true, runValidators: true },
     );
@@ -136,7 +142,7 @@ export async function PUT(
 // DELETE - Cancel a scheduled email
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> }, // Changed to Promise
 ) {
   try {
     await connectDB();
@@ -149,14 +155,17 @@ export async function DELETE(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    // Await params before using
+    const { id } = await params;
+
     // Validate ID format
-    if (!mongoose.Types.ObjectId.isValid(params.id)) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
       return NextResponse.json({ error: "Invalid ID format" }, { status: 400 });
     }
 
     // Find the scheduled email
     const scheduledEmail = await ScheduledEmail.findOne({
-      _id: params.id,
+      _id: id,
       userId: user.id,
     });
 
@@ -177,7 +186,7 @@ export async function DELETE(
 
     // Update the status to cancelled
     const cancelledEmail = await ScheduledEmail.findByIdAndUpdate(
-      params.id,
+      id,
       { $set: { status: "cancelled" } },
       { new: true },
     );
