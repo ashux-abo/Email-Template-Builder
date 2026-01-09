@@ -8,7 +8,7 @@ const CLOUDINARY_API_SECRET = process.env.CLOUDINARY_API_SECRET;
 if (!CLOUDINARY_CLOUD_NAME || !CLOUDINARY_API_KEY || !CLOUDINARY_API_SECRET) {
   console.warn(
     "⚠️ Cloudinary configuration is missing. Image uploads will fail. " +
-    "Please set CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET in your environment variables."
+      "Please set CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET in your environment variables.",
   );
 }
 
@@ -27,30 +27,15 @@ cloudinary.config({
  * @returns The Cloudinary response with image URL details
  */
 export async function uploadToCloudinary(
-  file: Buffer,
-  folderName: string = "uploads",
+  buffer: Buffer,
+  folderName = "uploads",
 ) {
-  try {
-    return new Promise((resolve, reject) => {
-      const uploadOptions = {
-        folder: folderName,
-        resource_type: "auto" as "auto",
-      };
+  const base64 = `data:image/jpeg;base64,${buffer.toString("base64")}`;
 
-      // Upload stream to Cloudinary
-      cloudinary.uploader
-        .upload_stream(uploadOptions, (error, result) => {
-          if (error || !result) {
-            return reject(error || new Error("Failed to upload to Cloudinary"));
-          }
-          resolve(result);
-        })
-        .end(file);
-    });
-  } catch (error) {
-    console.error("Error in cloudinary upload:", error);
-    throw error;
-  }
+  return await cloudinary.uploader.upload(base64, {
+    folder: folderName,
+    resource_type: "image",
+  });
 }
 
 /**
