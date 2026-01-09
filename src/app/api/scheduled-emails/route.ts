@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
-import connectDB from "@/lib/db";
-import ScheduledEmail from "@/models/ScheduledEmail";
-import EmailTemplate from "@/models/EmailTemplate";
-import Contact from "@/models/Contact";
-import AppNotification from "@/models/AppNotification";
-import { getUserFromRequest } from "@/lib/auth";
+import connectDB from "../../../../lib/db";
+import ScheduledEmail from "../../../../models/ScheduledEmail";
+import EmailTemplate from "../../../../models/EmailTemplate";
+import Contact from "../../../../models/Contact";
+import AppNotification from "../../../../models/AppNotification";
+import { getUserFromRequest } from "../../../../lib/auth";
 
 // GET - Fetch all scheduled emails for the current user
 export async function GET(request: NextRequest) {

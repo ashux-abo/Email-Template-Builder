@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
-import connectDB from "@/lib/db";
-import ScheduledEmail from "@/models/ScheduledEmail";
-import AppNotification from "@/models/AppNotification";
-import { getUserFromRequest } from "@/lib/auth";
+import connectDB from "../../../../lib/db";
+import ScheduledEmail from "../../../../models/ScheduledEmail";
+import AppNotification from "../../../../models/AppNotification";
+import { getUserFromRequest } from "../../../../lib/auth";
 
 // GET - Fetch a specific scheduled email
 export async function GET(

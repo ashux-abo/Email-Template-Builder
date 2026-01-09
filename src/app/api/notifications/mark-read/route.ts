@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
-import connectDB from "@/lib/db";
-import AppNotification from "@/models/AppNotification";
-import { getUserFromRequest } from "@/lib/auth";
+import connectDB from "../../../../lib/db";
+import AppNotification from "../../../../models/AppNotification";
+import { getUserFromRequest } from "../../../../lib/auth";
 
 export async function POST(request: NextRequest) {
   try {
