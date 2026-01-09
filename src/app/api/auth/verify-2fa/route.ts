@@ -1,9 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
-import connectDB from "@/lib/db";
-import User from "@/models/User";
-import SecuritySettings from "@/models/SecuritySettings";
+import connectDB from "../../../../lib/db";
+import User from "../../../../models/User";
+import SecuritySettings from "../../../../models/SecuritySettings";
 import speakeasy from "speakeasy";
-import { generateToken, setAuthCookie, createSession } from "@/lib/auth";
+import {
+  generateToken,
+  setAuthCookie,
+  createSession,
+} from "../../../../lib/auth";
 import { z } from "zod";
 
 // Validation schema for 2FA verification
