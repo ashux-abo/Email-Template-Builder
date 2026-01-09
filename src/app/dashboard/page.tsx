@@ -96,15 +96,10 @@ export default function DashboardPage() {
       <div className="bg-gray-50 rounded-lg p-6 border">
         <div className="mb-4 flex items-center">
           <Mail className="h-6 w-6 text-primary mr-2" />
-          <h2 className="text-xl font-semibold">Create Email</h2>
+          <DashboardContent
+            isDevelopment={process.env.NODE_ENV === "development"}
+          />
         </div>
-        <p className="text-gray-600 mb-6">
-          Create and send beautiful emails using PaletteMail templates
-        </p>
-
-        <DashboardContent
-          isDevelopment={process.env.NODE_ENV === "development"}
-        />
       </div>
     </div>
   );

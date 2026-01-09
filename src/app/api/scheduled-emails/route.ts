@@ -65,7 +65,6 @@ export async function POST(request: NextRequest) {
     }
     // Get recipient count based on the group
     let recipientCount = 0;
-    // Use 'any' type or proper MongoDB filter type for the query
     const query: any = { userId: user.id };
 
     if (data.recipientGroup !== "all") {
