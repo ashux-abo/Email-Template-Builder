@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
   try {
     await connectDB();
 
-    // Get the current user from the token
+    // Get the current user from the token - MUST AWAIT
     const userPayload = await getUserFromRequest(request);
 
     if (!userPayload) {
@@ -184,8 +184,8 @@ export async function DELETE(request: NextRequest) {
   try {
     await connectDB();
 
-    // Get the current user from the token
-    const userPayload = getUserFromRequest(request);
+    // Get the current user from the token - MUST AWAIT
+    const userPayload = await getUserFromRequest(request);
 
     if (!userPayload) {
       return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
