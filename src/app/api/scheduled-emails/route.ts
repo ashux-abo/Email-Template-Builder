@@ -11,20 +11,16 @@ import { getUserFromRequest } from "../../../lib/auth";
 export async function GET(request: NextRequest) {
   try {
     await connectDB();
-
     // Get the authenticated user
     const user = await getUserFromRequest(request);
-
     // If no user is found, return unauthorized
     if (!user || !user.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-
     // Get scheduled emails for user
     const scheduledEmails = await ScheduledEmail.find({
       userId: user.id,
     }).sort({ scheduledDate: 1 });
-
     return NextResponse.json({ scheduledEmails });
   } catch (error) {
     console.error("Error fetching scheduled emails:", error);
@@ -39,18 +35,14 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     await connectDB();
-
     // Get the authenticated user
     const user = await getUserFromRequest(request);
-
     // If no user is found, return unauthorized
     if (!user || !user.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-
     // Parse the request body
     const data = await request.json();
-
     // Validate required fields
     if (
       !data.subject ||
@@ -63,7 +55,6 @@ export async function POST(request: NextRequest) {
         { status: 400 },
       );
     }
-
     // Validate template exists
     const template = await EmailTemplate.findById(data.templateId);
     if (!template) {
@@ -72,20 +63,16 @@ export async function POST(request: NextRequest) {
         { status: 404 },
       );
     }
-
     // Get recipient count based on the group
     let recipientCount = 0;
-    let query = { userId: user.id };
+    // Use 'any' type or proper MongoDB filter type for the query
+    const query: any = { userId: user.id };
 
     if (data.recipientGroup !== "all") {
-      query = {
-        ...query,
-        tags: { $in: [data.recipientGroup] },
-      };
+      query.tags = { $in: [data.recipientGroup] };
     }
 
     recipientCount = await Contact.countDocuments(query);
-
     // Ensure there are recipients
     if (recipientCount === 0) {
       return NextResponse.json(
@@ -93,7 +80,6 @@ export async function POST(request: NextRequest) {
         { status: 400 },
       );
     }
-
     // Create scheduled email
     const scheduledEmail = await ScheduledEmail.create({
       userId: user.id,
@@ -107,7 +93,6 @@ export async function POST(request: NextRequest) {
       status: "scheduled",
       nextSendDate: new Date(data.scheduledDate),
     });
-
     // Create notification for the user
     await AppNotification.create({
       userId: user.id,
@@ -119,7 +104,6 @@ export async function POST(request: NextRequest) {
         scheduledEmailId: scheduledEmail._id,
       },
     });
-
     return NextResponse.json({ scheduledEmail }, { status: 201 });
   } catch (error) {
     console.error("Error creating scheduled email:", error);
