@@ -40,6 +40,7 @@
     "@types/nodemailer": "^7.0.4",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/speakeasy": "^2.0.10",
     "@types/ua-parser-js": "^0.7.39",
     "eslint": "^9",
     "eslint-config-next": "16.0.7",
