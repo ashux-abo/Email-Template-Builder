@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import connectDB from "@/lib/db";
-import Image from "@/models/Image";
+import connectDB from "../../../../lib/db";
+import Image from "../../../../models/Image";
 import { ObjectId } from "mongodb";
 
 // Force dynamic rendering to avoid caching issues

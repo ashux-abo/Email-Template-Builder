@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getUserFromRequest } from "@/lib/auth";
-import connectDB from "@/lib/db";
-import Image from "@/models/Image";
+import { getUserFromRequest } from "../../../../lib/auth";
+import connectDB from "../../../../lib/db";
+import Image from "../../../../models/Image";
 
 export async function POST(request: NextRequest) {
   try {
