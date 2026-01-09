@@ -92,12 +92,9 @@ export default function DashboardPage() {
           </div>
         </Link>
       </div>
-
-      <div className="bg-gray-50 rounded-lg p-6 border">
-        <DashboardContent
-          isDevelopment={process.env.NODE_ENV === "development"}
-        />
-      </div>
+      <DashboardContent
+        isDevelopment={process.env.NODE_ENV === "development"}
+      />
     </div>
   );
 }

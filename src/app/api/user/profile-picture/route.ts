@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
     await connectDB();
 
     // Get the current user from the token
-    const userPayload = getUserFromRequest(request);
+    const userPayload = await getUserFromRequest(request);
 
     if (!userPayload) {
       return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
@@ -24,10 +24,7 @@ export async function POST(request: NextRequest) {
     const file = formData.get("profilePicture") as File;
 
     if (!file) {
-      return NextResponse.json(
-        { error: "No file provided" },
-        { status: 400 },
-      );
+      return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
 
     // Validate file size (max 5MB)
@@ -48,16 +45,21 @@ export async function POST(request: NextRequest) {
     }
 
     // Check Cloudinary configuration BEFORE processing file
-    if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
+    if (
+      !process.env.CLOUDINARY_CLOUD_NAME ||
+      !process.env.CLOUDINARY_API_KEY ||
+      !process.env.CLOUDINARY_API_SECRET
+    ) {
       console.error("Cloudinary configuration missing:", {
         hasCloudName: !!process.env.CLOUDINARY_CLOUD_NAME,
         hasApiKey: !!process.env.CLOUDINARY_API_KEY,
         hasApiSecret: !!process.env.CLOUDINARY_API_SECRET,
       });
       return NextResponse.json(
-        { 
-          error: "Cloudinary is not configured. Please set CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET in your environment variables.",
-          details: "Missing Cloudinary credentials"
+        {
+          error:
+            "Cloudinary is not configured. Please set CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET in your environment variables.",
+          details: "Missing Cloudinary credentials",
         },
         { status: 500 },
       );
@@ -89,22 +91,28 @@ export async function POST(request: NextRequest) {
         error: cloudinaryError,
         stack: cloudinaryError.stack,
       });
-      
+
       // Check for specific Cloudinary errors
-      if (cloudinaryError.message?.includes("Invalid Signature") || cloudinaryError.message?.includes("signature")) {
+      if (
+        cloudinaryError.message?.includes("Invalid Signature") ||
+        cloudinaryError.message?.includes("signature")
+      ) {
         return NextResponse.json(
-          { 
-            error: "Cloudinary authentication failed. Please check your CLOUDINARY_API_SECRET in environment variables.",
-            details: "Invalid Cloudinary API signature - verify your API secret is correct"
+          {
+            error:
+              "Cloudinary authentication failed. Please check your CLOUDINARY_API_SECRET in environment variables.",
+            details:
+              "Invalid Cloudinary API signature - verify your API secret is correct",
           },
           { status: 500 },
         );
       }
-      
+
       return NextResponse.json(
-        { 
-          error: cloudinaryError.message || "Failed to upload image to Cloudinary",
-          details: "Please check your Cloudinary API credentials"
+        {
+          error:
+            cloudinaryError.message || "Failed to upload image to Cloudinary",
+          details: "Please check your Cloudinary API credentials",
         },
         { status: 500 },
       );
@@ -143,7 +151,10 @@ export async function POST(request: NextRequest) {
     } catch (dbError: any) {
       console.error("Error saving profile picture to database:", dbError);
       return NextResponse.json(
-        { error: "Image uploaded but failed to save to database", details: dbError.message },
+        {
+          error: "Image uploaded but failed to save to database",
+          details: dbError.message,
+        },
         { status: 500 },
       );
     }
@@ -156,9 +167,9 @@ export async function POST(request: NextRequest) {
     console.error("Unexpected error uploading profile picture:", error);
     // Ensure we always return JSON, never HTML
     return NextResponse.json(
-      { 
+      {
         error: error.message || "Failed to upload profile picture",
-        details: "An unexpected error occurred"
+        details: "An unexpected error occurred",
       },
       { status: 500 },
     );
