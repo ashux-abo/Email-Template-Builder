@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
 
     // Enable 2FA
     securitySettings.twoFactorEnabled = true;
-    await securitySettings.json();
+    await securitySettings.save();
 
     return NextResponse.json({
       success: true,
