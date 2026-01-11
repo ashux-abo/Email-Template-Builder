@@ -216,7 +216,7 @@ export function NotificationPanel() {
               className="text-xs text-muted-foreground w-full"
               asChild
             >
-              <a href="/profile/notifications">
+              <a href="/dashboard/profile/notifications">
                 View all notifications
                 <ExternalLink size={12} className="ml-1" />
               </a>

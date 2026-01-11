@@ -30,15 +30,17 @@ export default async function Home() {
 
               <div className="space-y-6">
                 <h1 className="text-6xl lg:text-7xl font-bold leading-tight tracking-tight">
-                  Email design,
+                  Email Template
                   <br />
-                  <span className="text-indigo-400">reimagined</span>
+                  <span className="text-indigo-400">Builder</span>
                 </h1>
                 <p className="text-xl text-slate-400 leading-relaxed max-w-xl">
-                  Finally, an email builder that isn't a headache. Design
-                  great-looking campaigns in minutes, keep your data safe, and
-                  send with confidence knowing your emails will show up exactly
-                  how you planned.
+                  Design email templates exactly how you picture them. Reorder
+                  sections with a click, position elements anywhere on the
+                  canvas, break free from rigid layouts. Build templates your
+                  community can customize for their own needs. Made for
+                  marketers who want speed without sacrificing control, backed
+                  by live preview that shows what recipients actually see.
                 </p>
               </div>
 
@@ -304,8 +306,8 @@ export default async function Home() {
               Ready to transform your email marketing?
             </h2>
             <p className="text-xl text-slate-400 mb-10">
-              Join thousands of creators building email experiences with Palette
-              Mail
+              Palette Mail gives you the tools to design, customize, and launch
+              emails effortlessly.
             </p>
             <Link
               href={hasAuthCookie ? "/dashboard" : "/register"}

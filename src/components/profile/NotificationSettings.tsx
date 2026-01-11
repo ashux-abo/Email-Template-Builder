@@ -17,6 +17,9 @@ import {
   FileText,
   Star,
   ExternalLink,
+  Mail,
+  MousePointerClick,
+  AlertCircle,
 } from "lucide-react";
 
 interface NotificationPreferences {
@@ -119,114 +122,150 @@ export default function NotificationSettings() {
     }
   };
 
+  const notificationItems = [
+    {
+      id: "newFeatures",
+      icon: Star,
+      iconBg: "bg-amber-100",
+      iconColor: "text-amber-600",
+      title: "New Features",
+      description: "Receive notifications about new features and updates",
+      value: preferences.app.newFeatures,
+    },
+    {
+      id: "security",
+      icon: AlertTriangle,
+      iconBg: "bg-red-100",
+      iconColor: "text-red-600",
+      title: "Security Alerts",
+      description: "Important security notifications and alerts",
+      value: preferences.app.security,
+    },
+    {
+      id: "emailSent",
+      icon: Mail,
+      iconBg: "bg-green-100",
+      iconColor: "text-green-600",
+      title: "Email Sent",
+      description: "Get notified when your emails are sent successfully",
+      value: preferences.app.emailSent,
+    },
+    {
+      id: "emailOpened",
+      icon: ExternalLink,
+      iconBg: "bg-blue-100",
+      iconColor: "text-blue-600",
+      title: "Email Opened",
+      description: "Know when recipients open your emails",
+      value: preferences.app.emailOpened,
+    },
+    {
+      id: "emailClicked",
+      icon: MousePointerClick,
+      iconBg: "bg-purple-100",
+      iconColor: "text-purple-600",
+      title: "Email Clicked",
+      description: "Track when links in your emails are clicked",
+      value: preferences.app.emailClicked,
+    },
+    {
+      id: "emailBounced",
+      icon: AlertCircle,
+      iconBg: "bg-orange-100",
+      iconColor: "text-orange-600",
+      title: "Email Bounced",
+      description: "Alerts when emails fail to deliver",
+      value: preferences.app.emailBounced,
+    },
+    {
+      id: "newTemplates",
+      icon: FileText,
+      iconBg: "bg-indigo-100",
+      iconColor: "text-indigo-600",
+      title: "New Templates",
+      description: "Get notified about new email templates",
+      value: preferences.app.newTemplates,
+    },
+  ];
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-xl">Notification Settings</CardTitle>
-        <CardDescription>
-          Control which notifications you receive within the application
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-6">
-        <div className="space-y-4">
-          <h3 className="font-medium">In-App Notifications</h3>
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-2xl font-semibold tracking-tight">
+          Notification Preferences
+        </h2>
+        <p className="text-muted-foreground mt-1">
+          Manage how and when you receive notifications
+        </p>
+      </div>
 
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <div className="flex items-start gap-3">
-                <div className="p-1.5 rounded-full bg-primary/10">
-                  <Star className="h-5 w-5 text-primary" />
-                </div>
-                <div>
-                  <h4 className="font-medium text-sm">New Features</h4>
-                  <p className="text-sm text-muted-foreground">
-                    Receive notifications about new features and updates
-                  </p>
-                </div>
-              </div>
-              <Switch
-                checked={preferences.app.newFeatures}
-                onCheckedChange={(value) =>
-                  handleToggle("app", "newFeatures", value)
-                }
-                disabled={isLoading || isSaving}
-              />
+      <Card className="border-2">
+        <CardHeader className="pb-4">
+          <div className="flex items-center gap-2">
+            <div className="p-2 rounded-lg bg-primary/10">
+              <BellRing className="h-5 w-5 text-primary" />
             </div>
-
-            <div className="flex items-center justify-between">
-              <div className="flex items-start gap-3">
-                <div className="p-1.5 rounded-full bg-destructive/10">
-                  <AlertTriangle className="h-5 w-5 text-destructive" />
-                </div>
-                <div>
-                  <h4 className="font-medium text-sm">Security Alerts</h4>
-                  <p className="text-sm text-muted-foreground">
-                    Receive notifications about security issues and alerts
-                  </p>
-                </div>
-              </div>
-              <Switch
-                checked={preferences.app.security}
-                onCheckedChange={(value) =>
-                  handleToggle("app", "security", value)
-                }
-                disabled={isLoading || isSaving}
-              />
-            </div>
-
-            <div className="flex items-center justify-between">
-              <div className="flex items-start gap-3">
-                <div className="p-1.5 rounded-full bg-green-100">
-                  <ExternalLink className="h-5 w-5 text-green-600" />
-                </div>
-                <div>
-                  <h4 className="font-medium text-sm">Email Sent</h4>
-                  <p className="text-sm text-muted-foreground">
-                    Get notified when your emails are sent successfully
-                  </p>
-                </div>
-              </div>
-              <Switch
-                checked={preferences.app.emailSent}
-                onCheckedChange={(value) =>
-                  handleToggle("app", "emailSent", value)
-                }
-                disabled={isLoading || isSaving}
-              />
-            </div>
-
-            <div className="flex items-center justify-between">
-              <div className="flex items-start gap-3">
-                <div className="p-1.5 rounded-full bg-blue-100">
-                  <FileText className="h-5 w-5 text-blue-600" />
-                </div>
-                <div>
-                  <h4 className="font-medium text-sm">New Templates</h4>
-                  <p className="text-sm text-muted-foreground">
-                    Get notified about new email templates
-                  </p>
-                </div>
-              </div>
-              <Switch
-                checked={preferences.app.newTemplates}
-                onCheckedChange={(value) =>
-                  handleToggle("app", "newTemplates", value)
-                }
-                disabled={isLoading || isSaving}
-              />
+            <div>
+              <CardTitle className="text-lg">In-App Notifications</CardTitle>
+              <CardDescription className="text-sm">
+                Choose which notifications you want to receive
+              </CardDescription>
             </div>
           </div>
-        </div>
+        </CardHeader>
+        <CardContent className="space-y-1">
+          {notificationItems.map((item, index) => (
+            <div
+              key={item.id}
+              className={`flex items-center justify-between p-4 rounded-lg hover:bg-muted/50 transition-colors ${
+                index !== notificationItems.length - 1 ? "border-b" : ""
+              }`}
+            >
+              <div className="flex items-start gap-4 flex-1">
+                <div className={`p-2 rounded-lg ${item.iconBg} flex-shrink-0`}>
+                  <item.icon className={`h-5 w-5 ${item.iconColor}`} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h4 className="font-medium text-sm mb-0.5">{item.title}</h4>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {item.description}
+                  </p>
+                </div>
+              </div>
+              <Switch
+                checked={item.value}
+                onCheckedChange={(value) => handleToggle("app", item.id, value)}
+                disabled={isLoading || isSaving}
+                className="ml-4"
+              />
+            </div>
+          ))}
+        </CardContent>
+      </Card>
 
-        <div className="flex justify-end">
+      <div className="flex items-center justify-between pt-2">
+        <p className="text-sm text-muted-foreground">
+          {hasChanges && "You have unsaved changes"}
+        </p>
+        <div className="flex gap-2">
+          {hasChanges && (
+            <Button
+              variant="outline"
+              onClick={() => window.location.reload()}
+              disabled={isSaving}
+            >
+              Cancel
+            </Button>
+          )}
           <Button
             onClick={saveChanges}
             disabled={isLoading || isSaving || !hasChanges}
+            className="min-w-[120px]"
           >
             {isSaving ? "Saving..." : "Save Changes"}
           </Button>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

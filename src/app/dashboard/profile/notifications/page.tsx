@@ -175,7 +175,9 @@ export default function NotificationsPage() {
           <Button
             variant="outline"
             size="sm"
-            onClick={() => router.push("/profile/notifications/settings")}
+            onClick={() =>
+              router.push("/dashboard/profile/notifications/settings")
+            }
           >
             Settings
           </Button>
