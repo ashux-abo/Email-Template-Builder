@@ -77,20 +77,6 @@ export default async function Home() {
                   </>
                 )}
               </div>
-
-              <div className="flex items-center gap-8 pt-6">
-                <div className="flex items-center gap-3">
-                  <div className="flex -space-x-3">
-                    <div className="w-10 h-10 rounded-full bg-slate-700 border-2 border-slate-900"></div>
-                    <div className="w-10 h-10 rounded-full bg-slate-600 border-2 border-slate-900"></div>
-                    <div className="w-10 h-10 rounded-full bg-slate-500 border-2 border-slate-900"></div>
-                  </div>
-                  <div className="text-sm">
-                    <div className="font-medium">12,000+ creators</div>
-                    <div className="text-slate-500">trust Palette Mail</div>
-                  </div>
-                </div>
-              </div>
             </div>
 
             {/* Right Visual */}

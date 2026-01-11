@@ -319,8 +319,7 @@ export function VisualTemplateBuilder({
               {templateId ? "Edit Visual Template" : "Create Visual Template"}
             </h2>
             <p className="text-gray-600">
-              Build your email template using drag-and-drop blocks with
-              real-time preview
+              Build your email template with real-time preview
             </p>
           </div>
         </div>
