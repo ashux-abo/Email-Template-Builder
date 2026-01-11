@@ -1,6 +1,6 @@
 # Email Sender
 
-A simple student project built with **Next.js** that allows users to send emails using a web interface. This project was made to practice full-stack development, API routes, and email handling.
+A project built with **Next.js** that allows users to send emails using a web interface. This project was made to practice full-stack development, API routes, and email handling.
 
 ## Purpose
 
