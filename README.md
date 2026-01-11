@@ -103,11 +103,5 @@ npm run dev
 * This project is for learning purposes only
 * Security features are minimal
 
-## Future Improvements
-
-* Better validation
-* Improved UI
-* Email templates
-* Error handling
 
 
