@@ -45,10 +45,27 @@ npm install
 3. Create a `.env` file and add the required environment variables
 
 ```env
-MONGODB_URI=your_mongodb_uri
-EMAIL_USER=your_email
-EMAIL_PASS=your_email_password
-JWT_SECRET=your_secret_key
+# MongoDB Connection
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/database
+
+# Authentication
+NEXTAUTH_SECRET=your_nextauth_secret
+NEXTAUTH_URL=http://localhost:3000
+JWT_SECRET=your_jwt_secret
+
+# NEXT_PUBLIC_APP_URL
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+
+# Email Configuration
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your_email@example.com
+SMTP_PASSWORD=your_email_password
+
+# Cloudinary
+CLOUDINARY_CLOUD_NAME=your_cloudinary_name
+CLOUDINARY_API_KEY=your_cloudinary_api_key
+CLOUDINARY_API_SECRET=your_cloudinary_api_secret
 ```
 
 4. Run the project
