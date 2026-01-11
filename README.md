@@ -110,10 +110,4 @@ npm run dev
 * Email templates
 * Error handling
 
-## Author
 
-John Ashley Dulay
-
-## License
-
-This project is for educational use.
