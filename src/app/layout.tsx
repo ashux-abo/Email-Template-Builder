@@ -12,12 +12,12 @@ const firaMono = Fira_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "PaletteMail",
+  title: "Email Sender",
   description: "A modern email template builder and sender application",
   icons: {
-    icon: [{ url: "/favicon-icon.svg?v=1", type: "image/svg+xml" }],
-    shortcut: "/favicon-icon.svg?v=1",
-    apple: "/favicon-icon.svg?v=1",
+    icon: [{ url: "/email-sender.png?v=1", type: "image/png" }],
+    shortcut: "/email-sender.png?v=1",
+    apple: "/email-sender.png?v=1",
   },
   manifest: "/manifest.json",
 };
@@ -37,13 +37,13 @@ export default function RootLayout({
         {/* Preload key logo assets */}
         <link
           rel="preload"
-          href="/logo.svg"
+          href="/email-sender.png?v=1"
           as="image"
-          type="image/svg+xml"
+          type="image/png"
           fetchPriority="high"
         />
-        <link rel="icon" href="/favicon-icon.svg?v=1" type="image/svg+xml" />
-        <link rel="apple-touch-icon" href="/favicon-icon.svg?v=1" />
+        <link rel="icon" href="/email-sender.png?v=1" type="image/png" />
+        <link rel="apple-touch-icon" href="/email-sender.png?v=1" />
         <link rel="manifest" href="/manifest.json" />
       </head>
       <body className={`${firaMono.variable} antialiased`}>
