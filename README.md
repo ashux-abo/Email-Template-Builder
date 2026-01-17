@@ -33,7 +33,7 @@ The main goal of this project is to understand how email sending works in a web 
 1. Clone the repository
 
 ```bash
-git clone (https://github.com/ashux-abo/Email-Sender.git)
+git clone https://github.com/ashux-abo/Email-Template-Builder.git
 ```
 
 2. Install dependencies
