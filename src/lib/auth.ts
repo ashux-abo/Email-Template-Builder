@@ -158,8 +158,9 @@ export async function createSession(
  */
 export function setAuthCookie(res: NextResponse, token: string): void {
   // On Vercel, we need secure cookies for HTTPS
-  const isProduction = process.env.NODE_ENV === "production" || process.env.VERCEL === "1";
-  
+  const isProduction =
+    process.env.NODE_ENV === "production" || process.env.VERCEL === "1";
+
   res.cookies.set({
     name: "token",
     value: token,
@@ -176,8 +177,9 @@ export function setAuthCookie(res: NextResponse, token: string): void {
  * Clear auth cookie
  */
 export function clearAuthCookie(res: NextResponse): void {
-  const isProduction = process.env.NODE_ENV === "production" || process.env.VERCEL === "1";
-  
+  const isProduction =
+    process.env.NODE_ENV === "production" || process.env.VERCEL === "1";
+
   res.cookies.set({
     name: "token",
     value: "",
