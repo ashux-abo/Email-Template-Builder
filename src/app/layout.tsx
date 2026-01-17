@@ -12,12 +12,12 @@ const firaMono = Fira_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "PaletteMail",
+  title: "Email Sender",
   description: "A modern email template builder and sender application",
   icons: {
-    icon: [{ url: "/favicon-icon.svg?v=1", type: "image/svg+xml" }],
-    shortcut: "/favicon-icon.svg?v=1",
-    apple: "/favicon-icon.svg?v=1",
+    icon: [{ url: "/email-sender.png?v=1", type: "image/png" }],
+    shortcut: "/email-sender.png?v=1",
+    apple: "/email-sender.png?v=1",
   },
   manifest: "/manifest.json",
 };
