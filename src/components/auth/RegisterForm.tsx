@@ -87,7 +87,14 @@ export default function RegisterForm() {
     <div className="mx-auto max-w-md space-y-6 p-6 bg-white rounded-lg shadow-md">
       <div className="text-center space-y-4">
         <div className="flex justify-center mb-4">
-          <h1 className="text-3xl font-bold" style={{ color: "#3A4A74" }}>Sendly</h1>
+          <OptimizedImage
+            src="/sendly-logo.png"
+            alt="Sendly Logo"
+            width={120}
+            height={60}
+            className="h-16 w-auto"
+            priority
+          />
         </div>
         <h1 className="text-2xl font-bold" style={{ color: "#3F4555" }}>
           Create an Account

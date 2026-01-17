@@ -15,9 +15,9 @@ export const metadata: Metadata = {
   title: "Sendly",
   description: "A modern email template builder and sender application powered by Sendly",
   icons: {
-    icon: [{ url: "/email-sender.png?v=1", type: "image/png" }],
-    shortcut: "/email-sender.png?v=1",
-    apple: "/email-sender.png?v=1",
+    icon: [{ url: "/sendly-logo.png", type: "image/png" }],
+    shortcut: "/sendly-logo.png",
+    apple: "/sendly-logo.png",
   },
   manifest: "/manifest.json",
 };
@@ -37,13 +37,13 @@ export default function RootLayout({
         {/* Preload key logo assets */}
         <link
           rel="preload"
-          href="/email-sender.png?v=1"
+          href="/sendly-logo.png"
           as="image"
           type="image/png"
           fetchPriority="high"
         />
-        <link rel="icon" href="/email-sender.png?v=1" type="image/png" />
-        <link rel="apple-touch-icon" href="/email-sender.png?v=1" />
+        <link rel="icon" href="/sendly-logo.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/sendly-logo.png" />
         <link rel="manifest" href="/manifest.json" />
       </head>
       <body className={`${firaMono.variable} antialiased`}>

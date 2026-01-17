@@ -8,19 +8,19 @@
   "theme_color": "#3A4A74",
   "icons": [
     {
-      "src": "/email-sender.png",
+      "src": "/sendly-logo.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/email-sender.png",
+      "src": "/sendly-logo.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/email-sender.png",
+      "src": "/sendly-logo.png",
       "sizes": "any",
       "type": "image/png",
       "purpose": "maskable"

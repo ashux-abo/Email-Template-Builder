@@ -138,7 +138,14 @@ export default function Navigation() {
       <div className="container mx-auto flex h-14 items-center px-4">
         <div className="flex items-center mr-8">
           <Link href="/" className="flex items-center gap-1.5">
-            <span className="text-xl font-bold" style={{ color: "#3A4A74" }}>Sendly</span>
+            <OptimizedImage
+              src="/sendly-logo.png"
+              alt="Sendly Logo"
+              width={100}
+              height={50}
+              className="h-8 w-auto"
+              priority
+            />
           </Link>
         </div>
 

@@ -155,7 +155,14 @@ export default function LoginForm() {
   return (
     <div className="mx-auto w-full max-w-md">
       <div className="flex justify-center mb-6">
-        <h1 className="text-3xl font-bold" style={{ color: "#3A4A74" }}>Sendly</h1>
+        <OptimizedImage
+          src="/sendly-logo.png"
+          alt="Sendly Logo"
+          width={120}
+          height={60}
+          className="h-16 w-auto"
+          priority
+        />
       </div>
       <div className="text-center space-y-4">
         <h1 className="text-2xl font-bold" style={{ color: "#3F4555" }}>
