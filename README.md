@@ -98,10 +98,5 @@ npm run dev
 /public         → Static assets
 ```
 
-## Notes
-
-* This project is for learning purposes only
-* Security features are minimal
-
 
 
