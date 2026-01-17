@@ -2,8 +2,8 @@ import RegisterForm from "../../components/auth/RegisterForm";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Register | PaletteMail",
-  description: "Create a new account for PaletteMail",
+  title: "Register | Email Sender",
+  description: "Create a new account for Email Sender",
 };
 
 export default function RegisterPage() {

@@ -2,8 +2,8 @@ import LoginForm from "../../components/auth/LoginForm";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Login | PaletteMail",
-  description: "Login to your PaletteMail account",
+  title: "Login | Email Sender",
+  description: "Login to your Email Sender account",
 };
 
 export default function LoginPage() {

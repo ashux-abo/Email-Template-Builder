@@ -139,8 +139,10 @@ export default function Navigation() {
         <div className="flex items-center mr-8">
           <Link href="/" className="flex items-center gap-1.5">
             <OptimizedImage
-              src="/logo.svg"
-              alt="PaletteMail Logo"
+              src="/email-sender.png {
+
+              }"
+              alt="Email Sender Logo"
               width={32}
               height={32}
               className="h-8 w-auto"
