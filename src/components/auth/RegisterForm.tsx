@@ -90,9 +90,9 @@ export default function RegisterForm() {
           <OptimizedImage
             src="/sendly-logo.png"
             alt="Sendly Logo"
-            width={120}
-            height={60}
-            className="h-16 w-auto"
+            width={280}
+            height={140}
+            className="h-40 w-auto"
             priority
           />
         </div>
