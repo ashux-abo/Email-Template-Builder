@@ -12,8 +12,8 @@ const firaMono = Fira_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Email Sender",
-  description: "A modern email template builder and sender application",
+  title: "Sendly",
+  description: "A modern email template builder and sender application powered by Sendly",
   icons: {
     icon: [{ url: "/email-sender.png?v=1", type: "image/png" }],
     shortcut: "/email-sender.png?v=1",

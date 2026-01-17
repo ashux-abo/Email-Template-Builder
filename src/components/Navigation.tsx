@@ -138,16 +138,7 @@ export default function Navigation() {
       <div className="container mx-auto flex h-14 items-center px-4">
         <div className="flex items-center mr-8">
           <Link href="/" className="flex items-center gap-1.5">
-            <OptimizedImage
-              src="/email-sender.png {
-
-              }"
-              alt="Email Sender Logo"
-              width={32}
-              height={32}
-              className="h-8 w-auto"
-              priority={true}
-            />
+            <span className="text-xl font-bold" style={{ color: "#3A4A74" }}>Sendly</span>
           </Link>
         </div>
 

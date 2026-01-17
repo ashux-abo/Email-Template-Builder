@@ -2,8 +2,8 @@ import RegisterForm from "../../components/auth/RegisterForm";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Register | Email Sender",
-  description: "Create a new account for Email Sender",
+  title: "Register | Sendly",
+  description: "Create a new account for Sendly",
 };
 
 export default function RegisterPage() {
