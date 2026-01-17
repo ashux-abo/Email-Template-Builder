@@ -12,7 +12,7 @@ if (!JWT_SECRET) {
     "Please define the JWT_SECRET environment variable inside .env",
   );
 }
-
+//update
 interface TokenPayload {
   id: string;
   email: string;
