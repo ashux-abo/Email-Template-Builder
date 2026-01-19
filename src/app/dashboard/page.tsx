@@ -10,8 +10,7 @@ export default function DashboardPage() {
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">Dashboard</h1>
         <p className="text-muted-foreground">
-          Welcome to PaletteMail. Manage your emails, contacts, and account
-          settings.
+          Welcome to Sendly. Manage your emails, contacts, and account settings.
         </p>
       </div>
 
