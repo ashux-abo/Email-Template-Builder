@@ -96,7 +96,5 @@ npm run dev
 /components     → Reusable UI components
 /styles         → Global and component styles
 /public         → Static assets
+/utils          → Utility functions and helpers
 ```
-
-
-
