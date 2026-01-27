@@ -22,7 +22,6 @@ The main goal of this project is to understand how email sending works in a web 
 * User authentication
 * Create and design custom email templates
 * Send styled emails such as:
-
   * Invitation cards
   * Interview emails
   * Birthday invitations
